@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#10233f">
-  <title>Χαρτοφυλάκιο Ασφαλίσεων</title>
+  <title>Χαρτοφυλάκιο Ασφαλίσεων · v5</title>
   <style>
     :root {
       --navy: #10233f;
@@ -575,10 +575,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Χαρτοφυλάκιο">
   <meta name="format-detection" content="telephone=no">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+  <link rel="manifest" href="./manifest.webmanifest?v=5">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=5">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5">
 
 </head>
 <body>
@@ -591,7 +591,7 @@
           <p>Έλεγχος ασφαλιστικών συμβολαίων</p>
         </div>
       </div>
-      <div class="data-pill">Δεδομένα Ζωής: 244 εγγραφές</div>
+      <div class="data-pill">Έκδοση 5 · Ακριβής αναζήτηση</div>
     </header>
 
 
@@ -660,7 +660,7 @@
           >
           <button id="clearSearch" class="clear-button" type="button" aria-label="Καθαρισμός αναζήτησης">✕</button>
         </div>
-        <p class="search-hint">Γράψε μόνο επώνυμο για όλη την οικογένεια ή επώνυμο και όνομα για συγκεκριμένο πρόσωπο. Δεν επηρεάζεται από τόνους ή πεζά/κεφαλαία.</p>
+        <p class="search-hint">Ακριβής αναζήτηση ολόκληρων λέξεων: επώνυμο ή επώνυμο και όνομα. Αγνοούνται μόνο τόνοι και πεζά/κεφαλαία.</p>
       </div>
 
       <div id="resultArea" class="result-area" aria-live="polite">
@@ -760,50 +760,21 @@
 
     function tokenMatches(nameToken, queryToken) {
       if (!nameToken || !queryToken) return false;
-      return nameToken === queryToken ||
-        nameToken.startsWith(queryToken) ||
-        queryToken.startsWith(nameToken);
-    }
-
-    function surnameTokenMatches(nameToken, queryToken) {
-      if (tokenMatches(nameToken, queryToken)) return true;
-
-      const queryVariants = surnameVariants(queryToken);
-      const nameVariants = surnameVariants(nameToken);
-
-      for (const variant of queryVariants) {
-        if (nameVariants.has(variant)) return true;
-      }
-      return false;
+      return nameToken === queryToken;
     }
 
     function personMatches(personName, rawQuery) {
-      const query = normalizeGreek(rawQuery);
-      if (!query) return false;
-
-      const fullName = normalizeGreek(personName);
-      const nameTokens = fullName.split(" ").filter(Boolean);
-      const queryTokens = query.split(" ").filter(Boolean);
+      const nameTokens = normalizeGreek(personName).split(" ").filter(Boolean);
+      const queryTokens = normalizeGreek(rawQuery).split(" ").filter(Boolean);
 
       if (!nameTokens.length || !queryTokens.length) return false;
+      if (queryTokens.length > nameTokens.length) return false;
 
-      // Άμεση αντιστοίχιση ολόκληρης φράσης.
-      if (fullName.includes(query)) return true;
-
-      // Με ένα μόνο λεκτικό γίνεται αναζήτηση επωνύμου,
-      // μαζί με τις συνήθεις ανδρικές/γυναικείες καταλήξεις.
-      if (queryTokens.length === 1) {
-        return surnameTokenMatches(nameTokens[0], queryTokens[0]);
-      }
-
-      // Με επώνυμο και όνομα απαιτούνται και τα δύο:
-      // το πρώτο λεκτικό αντιστοιχεί στο επώνυμο και όλα τα επόμενα
-      // πρέπει να υπάρχουν στο υπόλοιπο ονοματεπώνυμο.
-      if (!surnameTokenMatches(nameTokens[0], queryTokens[0])) return false;
-
-      const remainingNameTokens = nameTokens.slice(1);
-      return queryTokens.slice(1).every(queryToken =>
-        remainingNameTokens.some(nameToken => tokenMatches(nameToken, queryToken))
+      // Αυστηρή αντιστοίχιση ολόκληρων λέξεων με την ίδια σειρά:
+      // 1 λέξη = ακριβές επώνυμο
+      // 2 λέξεις = ακριβές επώνυμο + ακριβές όνομα
+      return queryTokens.every(
+        (queryToken, index) => nameTokens[index] === queryToken
       );
     }
 
@@ -828,19 +799,17 @@
       if (!queryTokens.length) return escapeHtml(text);
 
       const words = text.split(/(\s+)/);
-      return words.map((word, index) => {
+      let tokenIndex = 0;
+
+      return words.map(word => {
         const normalizedWord = normalizeGreek(word);
         if (!normalizedWord) return escapeHtml(word);
 
-        const isFirstNameToken =
-          text.slice(0, text.indexOf(word)).trim().length === 0;
+        const isMatch =
+          tokenIndex < queryTokens.length &&
+          normalizedWord === queryTokens[tokenIndex];
 
-        const isMatch = queryTokens.some((queryToken, queryIndex) =>
-          queryIndex === 0 && isFirstNameToken
-            ? surnameTokenMatches(normalizedWord, queryToken)
-            : tokenMatches(normalizedWord, queryToken)
-        );
-
+        tokenIndex += 1;
         return isMatch ? `<mark>${escapeHtml(word)}</mark>` : escapeHtml(word);
       }).join("");
     }
@@ -970,10 +939,22 @@
       });
 
       if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js").catch(() => {
-            // Η εφαρμογή εξακολουθεί να λειτουργεί online ακόμη κι αν αποτύχει το offline cache.
-          });
+        window.addEventListener("load", async () => {
+          try {
+            const registration = await navigator.serviceWorker.register("./sw-v5.js", {
+              updateViaCache: "none"
+            });
+            await registration.update();
+
+            navigator.serviceWorker.addEventListener("controllerchange", () => {
+              if (!sessionStorage.getItem("v5Reloaded")) {
+                sessionStorage.setItem("v5Reloaded", "1");
+                window.location.reload();
+              }
+            });
+          } catch (error) {
+            console.warn("Service worker update failed:", error);
+          }
         });
       }
     })();
