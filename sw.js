@@ -1,4 +1,4 @@
-const CACHE_NAME = "xartofylakio-v1";
+const CACHE_NAME = "xartofylakio-v3-exact";
 const APP_ASSETS = [
   "./",
   "./index.html",
