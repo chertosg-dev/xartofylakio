@@ -1,0 +1,983 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10233f">
+  <title>Χαρτοφυλάκιο Ασφαλίσεων</title>
+  <style>
+    :root {
+      --navy: #10233f;
+      --navy-2: #18385f;
+      --blue: #2463a8;
+      --blue-soft: #eaf2fb;
+      --gold: #c99a3d;
+      --green: #15805e;
+      --red: #b42318;
+      --text: #152033;
+      --muted: #657187;
+      --line: #dbe3ed;
+      --surface: #ffffff;
+      --background: #f3f6fa;
+      --shadow: 0 18px 45px rgba(16, 35, 63, .11);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(36, 99, 168, .12), transparent 33rem),
+        linear-gradient(180deg, #f9fbfd 0%, var(--background) 100%);
+    }
+
+    button, input { font: inherit; }
+
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .app-shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: max(24px, env(safe-area-inset-top)) 18px max(34px, env(safe-area-inset-bottom));
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 24px;
+      background: linear-gradient(145deg, var(--navy), var(--blue));
+      box-shadow: 0 10px 26px rgba(16, 35, 63, .2);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(21px, 3vw, 29px);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .data-pill {
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.74);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      margin: 0;
+      max-width: 700px;
+      font-size: clamp(30px, 6vw, 52px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .hero-copy {
+      max-width: 670px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .portfolio-card {
+      min-height: 210px;
+      padding: 24px;
+      border: 1px solid rgba(219, 227, 237, .9);
+      border-radius: var(--radius);
+      color: inherit;
+      text-align: left;
+      background: rgba(255,255,255,.88);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 55px rgba(16, 35, 63, .16);
+      border-color: rgba(36, 99, 168, .3);
+    }
+
+    .portfolio-card:active { transform: translateY(-1px) scale(.99); }
+
+    .portfolio-card.life {
+      color: white;
+      border: 0;
+      background: linear-gradient(145deg, var(--navy), #275b91);
+    }
+
+    .card-icon {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 35px;
+      border-radius: 17px;
+      font-size: 25px;
+      background: var(--blue-soft);
+    }
+
+    .life .card-icon { background: rgba(255,255,255,.14); }
+
+    .portfolio-card strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -.025em;
+    }
+
+    .portfolio-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .life span { color: rgba(255,255,255,.74); }
+
+    .view { display: none; }
+    .view.active { display: block; animation: appear .24s ease; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: var(--navy);
+      background: white;
+      cursor: pointer;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(27px, 5vw, 42px);
+      letter-spacing: -.035em;
+    }
+
+    .section-title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .search-panel {
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+      padding: 18px;
+      border: 1px solid rgba(219, 227, 237, .9);
+      border-radius: 20px;
+      background: rgba(255,255,255,.93);
+      box-shadow: 0 13px 35px rgba(16, 35, 63, .1);
+      backdrop-filter: blur(14px);
+    }
+
+    .search-label {
+      display: block;
+      margin: 0 0 9px 2px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 19px;
+    }
+
+    #surnameSearch {
+      width: 100%;
+      min-height: 58px;
+      padding: 0 52px 0 50px;
+      border: 1.5px solid #cbd6e4;
+      border-radius: 16px;
+      outline: none;
+      color: var(--text);
+      background: #fbfcfe;
+      font-size: 17px;
+      transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+    #surnameSearch:focus {
+      border-color: var(--blue);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(36, 99, 168, .12);
+    }
+
+    .clear-button {
+      display: none;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      width: 38px;
+      height: 38px;
+      transform: translateY(-50%);
+      border: 0;
+      border-radius: 11px;
+      color: var(--muted);
+      background: #eef2f7;
+      cursor: pointer;
+    }
+
+    .clear-button.visible { display: grid; place-items: center; }
+
+    .search-hint {
+      margin: 10px 2px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .result-area {
+      margin-top: 22px;
+    }
+
+    .empty-state {
+      padding: 48px 20px;
+      border: 1px dashed #cbd6e4;
+      border-radius: 20px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255,255,255,.55);
+    }
+
+    .empty-state .empty-icon {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 34px;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 2px 12px;
+    }
+
+    .results-header h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .results-count {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .results-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .policy-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(16, 35, 63, .06);
+    }
+
+    .policy-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(140px, .7fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .policy-number {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .policy-date {
+      margin-top: 13px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .policy-product {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .premium {
+      text-align: right;
+    }
+
+    .premium-label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .premium strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 22px;
+      color: var(--green);
+      letter-spacing: -.02em;
+    }
+
+    .people {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #edf1f5;
+    }
+
+    .person-box {
+      min-width: 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f7f9fc;
+    }
+
+    .person-box small {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+
+    .person-box span {
+      display: block;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    mark {
+      padding: 0 2px;
+      border-radius: 4px;
+      color: inherit;
+      background: #ffe9a8;
+    }
+
+    .summary-card {
+      display: none;
+      position: sticky;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      z-index: 4;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      color: white;
+      background: linear-gradient(135deg, var(--navy), var(--navy-2));
+      box-shadow: 0 18px 40px rgba(16, 35, 63, .24);
+    }
+
+    .summary-card.visible { display: grid; }
+
+    .summary-card span {
+      display: block;
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 26px;
+      letter-spacing: -.025em;
+    }
+
+    .summary-policies {
+      text-align: right;
+    }
+
+    .summary-policies strong { font-size: 20px; }
+
+    .placeholder {
+      padding: 50px 22px;
+      border: 1px dashed #cbd6e4;
+      border-radius: 22px;
+      text-align: center;
+      background: rgba(255,255,255,.7);
+    }
+
+    .placeholder-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .placeholder h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .placeholder p {
+      max-width: 520px;
+      margin: 0 auto;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+
+    .ios-install-tip {
+      display: none;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 0 0 22px;
+      padding: 14px 16px;
+      border: 1px solid rgba(36, 99, 168, .25);
+      border-radius: 16px;
+      background: #eef6ff;
+      color: var(--navy);
+      box-shadow: 0 8px 24px rgba(16, 35, 63, .07);
+    }
+
+    .ios-install-tip.visible { display: flex; }
+
+    .ios-install-tip strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+    }
+
+    .ios-install-tip span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .ios-install-tip button {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      margin-left: auto;
+      border: 0;
+      border-radius: 10px;
+      background: rgba(16, 35, 63, .08);
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    @media (display-mode: standalone) {
+      .ios-install-tip { display: none !important; }
+    }
+
+    @media (max-width: 760px) {
+      .app-shell { padding-left: 14px; padding-right: 14px; }
+      .topbar { margin-bottom: 26px; }
+      .data-pill { display: none; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-card { min-height: 160px; }
+      .card-icon { margin-bottom: 22px; }
+      .section-head { flex-direction: column-reverse; }
+      .policy-main { grid-template-columns: 1fr; }
+      .premium { text-align: left; }
+      .people { grid-template-columns: 1fr; }
+      .summary-card { grid-template-columns: 1fr; }
+      .summary-policies { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Χαρτοφυλάκιο">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">▦</div>
+        <div>
+          <h1>Χαρτοφυλάκιο</h1>
+          <p>Έλεγχος ασφαλιστικών συμβολαίων</p>
+        </div>
+      </div>
+      <div class="data-pill">Δεδομένα Ζωής: 244 εγγραφές</div>
+    </header>
+
+
+    <div id="iosInstallTip" class="ios-install-tip" role="note">
+      <div aria-hidden="true" style="font-size:22px;line-height:1;">📲</div>
+      <div>
+        <strong>Εγκατάσταση στο iPhone</strong>
+        <span>Στο Safari πάτησε «Κοινοποίηση» και μετά «Προσθήκη στην οθόνη αφετηρίας».</span>
+      </div>
+      <button id="closeIosTip" type="button" aria-label="Κλείσιμο">✕</button>
+    </div>
+
+
+    <section id="homeView" class="view active" aria-labelledby="homeTitle">
+      <div class="hero">
+        <p class="eyebrow">Κεντρικό μενού</p>
+        <h2 id="homeTitle">Επίλεξε χαρτοφυλάκιο</h2>
+        <p class="hero-copy">
+          Αναζήτησε γρήγορα τα συμβόλαια ενός πελάτη και δες τα συνολικά καθαρά ασφάλιστρα.
+        </p>
+      </div>
+
+      <div class="portfolio-grid">
+        <button class="portfolio-card life" type="button" data-target="lifeView">
+          <div class="card-icon" aria-hidden="true">♥</div>
+          <strong>Ζωής</strong>
+          <span>Αναζήτηση σε ασφαλισμένο και συμβαλλόμενο</span>
+        </button>
+
+        <button class="portfolio-card" type="button" data-target="autoView">
+          <div class="card-icon" aria-hidden="true">🚗</div>
+          <strong>Αυτοκίνητο</strong>
+          <span>Η ενότητα θα συνδεθεί στο επόμενο βήμα</span>
+        </button>
+
+        <button class="portfolio-card" type="button" data-target="fireView">
+          <div class="card-icon" aria-hidden="true">🏠</div>
+          <strong>Πυρός</strong>
+          <span>Η ενότητα θα συνδεθεί στο επόμενο βήμα</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="lifeView" class="view" aria-labelledby="lifeTitle">
+      <div class="section-head">
+        <div class="section-title">
+          <p class="eyebrow">Χαρτοφυλάκιο Ζωής</p>
+          <h2 id="lifeTitle">Αναζήτηση πελάτη</h2>
+          <p>Γράψε το επώνυμο ή ολόκληρο το ονοματεπώνυμο του ασφαλισμένου ή του συμβαλλομένου.</p>
+        </div>
+        <button class="back-button" type="button" data-home>← Αρχική</button>
+      </div>
+
+      <div class="search-panel">
+        <label class="search-label" for="surnameSearch">Επώνυμο ή ονοματεπώνυμο</label>
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="surnameSearch"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            placeholder="π.χ. Τσέρτος ή Τσέρτος Γεώργιος"
+          >
+          <button id="clearSearch" class="clear-button" type="button" aria-label="Καθαρισμός αναζήτησης">✕</button>
+        </div>
+        <p class="search-hint">Γράψε μόνο επώνυμο για όλη την οικογένεια ή επώνυμο και όνομα για συγκεκριμένο πρόσωπο. Δεν επηρεάζεται από τόνους ή πεζά/κεφαλαία.</p>
+      </div>
+
+      <div id="resultArea" class="result-area" aria-live="polite">
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">🔎</span>
+          Ξεκίνα πληκτρολογώντας τουλάχιστον 2 χαρακτήρες.
+        </div>
+      </div>
+
+      <div id="summaryCard" class="summary-card" aria-live="polite">
+        <div>
+          <span>Σύνολο ετήσιων καθαρών ασφαλίστρων</span>
+          <strong id="premiumTotal">0,00 €</strong>
+        </div>
+        <div class="summary-policies">
+          <span>Συμβόλαια</span>
+          <strong id="policyTotal">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="autoView" class="view">
+      <div class="section-head">
+        <div class="section-title">
+          <p class="eyebrow">Χαρτοφυλάκιο</p>
+          <h2>Αυτοκίνητο</h2>
+        </div>
+        <button class="back-button" type="button" data-home>← Αρχική</button>
+      </div>
+      <div class="placeholder">
+        <div class="placeholder-icon" aria-hidden="true">🚗</div>
+        <h3>Έτοιμο για το επόμενο βήμα</h3>
+        <p>Το κουμπί έχει δημιουργηθεί και θα συνδεθεί με το αρχείο χαρτοφυλακίου αυτοκινήτου.</p>
+      </div>
+    </section>
+
+    <section id="fireView" class="view">
+      <div class="section-head">
+        <div class="section-title">
+          <p class="eyebrow">Χαρτοφυλάκιο</p>
+          <h2>Πυρός</h2>
+        </div>
+        <button class="back-button" type="button" data-home>← Αρχική</button>
+      </div>
+      <div class="placeholder">
+        <div class="placeholder-icon" aria-hidden="true">🏠</div>
+        <h3>Έτοιμο για το επόμενο βήμα</h3>
+        <p>Το κουμπί έχει δημιουργηθεί και θα συνδεθεί με το αρχείο χαρτοφυλακίου πυρός.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const LIFE_RECORDS = [{"insured":"ΑΜΑΝΑΤΙΔΟΥ ΜΑΡΓΑΡΙΤΑ","policyholder":"ΙΝΤΖΙΡΤΖΗΣ ΑΝΔΡΕΑΣ","contract":"1232805","startDate":"12/02/2016","annualNetPremium":1171.1,"product":"Ν11 FULL"},{"insured":"ΑΜΠΑΤΑΓΓΕΛΟΣ ΠΛΟΥΤΑΡΧΟΣ","policyholder":"ΑΜΠΑΤΑΓΓΕΛΟΣ ΠΛΟΥΤΑΡΧΟΣ","contract":"1384470","startDate":"22/06/2018","annualNetPremium":134.0,"product":"Ν11 FULL"},{"insured":"ΑΜΠΑΤΑΓΓΕΛΟΥ ΕΙΡΗΝΗ","policyholder":"ΑΜΠΑΤΑΓΓΕΛΟΥ ΕΙΡΗΝΗ","contract":"1219641","startDate":"07/12/2015","annualNetPremium":1464.73,"product":"Ν11 FULL"},{"insured":"ΑΝΑΠΟΛΙΤΑΚΗ ΑΡΙΑΔΝΗ","policyholder":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","contract":"1346690","startDate":"22/11/2017","annualNetPremium":600.0,"product":"ΕΘΝΙΚΗ ΚΑΙ ΠΑΙΔΙ"},{"insured":"ΑΝΑΠΟΛΙΤΑΚΗ ΑΡΙΑΔΝΗ","policyholder":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","contract":"1346692","startDate":"22/11/2017","annualNetPremium":694.88,"product":"Ν11 FULL"},{"insured":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΕΜΜΑΝΟΥΗΛ","policyholder":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","contract":"1346688","startDate":"22/11/2017","annualNetPremium":748.64,"product":"Ν11 FULL"},{"insured":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","policyholder":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","contract":"1360689","startDate":"25/01/2018","annualNetPremium":382.55,"product":""},{"insured":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","policyholder":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","contract":"1622619","startDate":"27/07/2023","annualNetPremium":240.0,"product":"Ν11 FULL"},{"insured":"ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ","policyholder":"ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ","contract":"1225021","startDate":"23/12/2015","annualNetPremium":55.66,"product":"ΠΡΟΣΚΑΙΡΗ ΑΣΦΑΛΙΣΗ"},{"insured":"ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ","policyholder":"ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ","contract":"1215034","startDate":"09/11/2015","annualNetPremium":1408.78,"product":"Ν11 FULL"},{"insured":"ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ","policyholder":"ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ","contract":"1105895","startDate":"30/04/2013","annualNetPremium":1315.32,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ","policyholder":"ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ","contract":"1363194","startDate":"09/02/2018","annualNetPremium":134.0,"product":"Ν11 FULL"},{"insured":"ΒΑΣΙΛΑΚΟΥ ΧΡΙΣΤΙΝΑ","policyholder":"ΒΑΣΙΛΑΚΟΥ ΧΡΙΣΤΙΝΑ","contract":"1668321","startDate":"06/12/2024","annualNetPremium":2541.16,"product":"Ν11 FULL"},{"insured":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","policyholder":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","contract":"1625918","startDate":"12/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","policyholder":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","contract":"1413196","startDate":"19/12/2018","annualNetPremium":720.0,"product":"ΕΘΝΙΚΗ ΣΥΝΤΑΞΗ"},{"insured":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","policyholder":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","contract":"1427724","startDate":"15/03/2019","annualNetPremium":405.18,"product":"Ν11 FULL"},{"insured":"ΒΟΥΓΙΟΥΚΛΑΚΗΣ ΑΛΕΞΑΝΔΡΟΣ","policyholder":"ΒΟΥΓΙΟΥΚΛΑΚΗΣ ΓΕΩΡΓΙΟΣ","contract":"1413341","startDate":"17/12/2018","annualNetPremium":720.0,"product":"ΕΘΝΙΚΗ ΚΑΙ ΠΑΙΔΙ"},{"insured":"ΓΑΒΡΑ ΜΑΡΙΝΑ","policyholder":"ΓΑΒΡΑ ΜΑΡΙΝΑ","contract":"1585905","startDate":"28/07/2022","annualNetPremium":609.71,"product":"Ν11 FULL"},{"insured":"ΓΑΒΡΑ ΜΑΡΙΝΑ","policyholder":"ΓΑΒΡΑ ΜΑΡΙΝΑ","contract":"1626052","startDate":"13/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΓΕΩΡΓΑΛΗΣ ΣΤΕΦΑΝΟΣ","policyholder":"ΓΕΩΡΓΑΛΗΣ ΣΤΕΦΑΝΟΣ","contract":"1625972","startDate":"12/09/2023","annualNetPremium":120.0,"product":"Ν11 FULL"},{"insured":"ΓΕΩΡΓΙΟΥ ΞΑΝΘΗ","policyholder":"ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ","contract":"1698229","startDate":"08/12/2025","annualNetPremium":1831.05,"product":"Ν11 FULL"},{"insured":"ΓΙΑΝΝΑΚΑΣ ΙΩΑΝΝΗΣ","policyholder":"ΓΙΑΝΝΑΚΑΣ ΙΩΑΝΝΗΣ","contract":"1582882","startDate":"28/06/2022","annualNetPremium":498.52,"product":"Ν11 FULL"},{"insured":"ΓΙΑΝΝΙΚΑ ΜΕΛΙΝΑ ΣΟΦ","policyholder":"ΓΙΑΝΝΙΚΑΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1626988","startDate":"20/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΓΙΑΝΝΙΚΑ ΜΕΛΙΝΑ-ΣΟΦ","policyholder":"ΓΙΑΝΝΙΚΑΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1313210","startDate":"08/05/2017","annualNetPremium":643.08,"product":"Ν11 FULL"},{"insured":"ΓΙΑΝΝΟΠΟΥΛΟΥ ΜΑΡΙΝΑ","policyholder":"ΓΙΑΝΝΟΠΟΥΛΟΣ ΗΛΙΑΣ","contract":"1619758","startDate":"26/06/2023","annualNetPremium":1200.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΓΚΡΕΚΟΥ ΜΑΡΙΑΝΝΑ","policyholder":"ΠΑΙΚΟΥΛΑΣ ΚΩΝ/ΝΟΣ","contract":"1429262","startDate":"27/03/2019","annualNetPremium":1980.91,"product":"Ν11 FULL"},{"insured":"ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ","policyholder":"ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ","contract":"1608903","startDate":"14/03/2023","annualNetPremium":1662.33,"product":"Ν11 FULL"},{"insured":"ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ","policyholder":"ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ","contract":"1626684","startDate":"19/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ","policyholder":"ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ","contract":"1706303","startDate":"03/03/2026","annualNetPremium":1386.74,"product":"Ν11 FULL"},{"insured":"ΓΡΗΓΟΡΙΟΥ ΧΡΥΣΗΛΙΑ","policyholder":"ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ","contract":"1695963","startDate":"17/11/2025","annualNetPremium":767.93,"product":"Ν11 FULL"},{"insured":"ΔΑΜΙΓΟΥ ΤΕΡΨΙΧΟΡΗ","policyholder":"ΔΑΜΙΓΟΥ ΤΕΡΨΙΧΟΡΗ","contract":"1186670","startDate":"27/03/2015","annualNetPremium":2397.05,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΔΕΛΗΣΤΡΑΤΗ ΑΛΕΞΑΝΔΡΑ","policyholder":"ΔΕΛΗΣΤΡΑΤΗΣ ΓΑΒΡΙΗΛ","contract":"1556582","startDate":"22/10/2021","annualNetPremium":334.4,"product":"Ν11 FULL"},{"insured":"ΔΕΛΗΣΤΡΑΤΗ ΜΑΡΙΝΕΛΑ Ρ","policyholder":"ΔΕΛΗΣΤΡΑΤΗ ΜΑΡΙΝΕΛΑ Ρ","contract":"1167734","startDate":"05/11/2014","annualNetPremium":1262.89,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΔΕΛΤΣΙΔΗΣ ΑΓΓΕΛΟΣ","policyholder":"ΔΕΛΤΣΙΔΗΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1063210","startDate":"06/04/2012","annualNetPremium":937.71,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΔΕΣΠΟΤΟΠΟΥΛΟΣ ΚΩΝ/ΝΟΣ","policyholder":"ΔΕΣΠΟΤΟΠΟΥΛΟΣ ΚΩΝ/ΝΟΣ","contract":"1562465","startDate":"13/12/2021","annualNetPremium":1429.17,"product":"Ν11 FULL"},{"insured":"ΔΕΣΠΟΤΟΠΟΥΛΟΥ ΣΤΑΥΡΟΥΛΑ","policyholder":"ΔΕΣΠΟΤΟΠΟΥΛΟΥ ΣΤΑΥΡΟΥΛΑ","contract":"1665581","startDate":"07/11/2024","annualNetPremium":3615.31,"product":"Ν11 FULL"},{"insured":"ΔΟΜΑΖΟΥ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΔΟΜΑΖΟΣ ΙΩΑΝΝΗΣ","contract":"1681629","startDate":"09/05/2025","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΔΟΜΑΖΟΥ ΝΕΦΕΛΗ","policyholder":"ΔΟΜΑΖΟΣ ΙΩΑΝΝΗΣ","contract":"1465730","startDate":"11/11/2019","annualNetPremium":518.31,"product":"Ν11 FULL"},{"insured":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ","policyholder":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ","contract":"1570012","startDate":"23/02/2022","annualNetPremium":1058.34,"product":"Ν11 FULL"},{"insured":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ","policyholder":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ","contract":"1683298","startDate":"29/05/2025","annualNetPremium":240.0,"product":"Ν11 FULL"},{"insured":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΔΗΜΗΤΡΙΟΣ","policyholder":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ","contract":"1683496","startDate":"02/06/2025","annualNetPremium":236.38,"product":"Ν11 FULL"},{"insured":"ΖΑΦΕΙΡΟΠΟΥΛΟΥ ΥΒΟΝΝΗ","policyholder":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΗΣ","contract":"1545447","startDate":"28/06/2021","annualNetPremium":255.46,"product":"Ν11 FULL"},{"insured":"ΗΛΙΑΔΗΣ ΦΙΛΙΠΠΟΣ","policyholder":"ΗΛΙΑΔΗΣ ΦΙΛΙΠΠΟΣ","contract":"1705169","startDate":"18/02/2026","annualNetPremium":776.38,"product":"Ν11 FULL"},{"insured":"ΗΟΧΗΑ ΝΙΚΟLΑS","policyholder":"ΗΟΧΗΑ ΧΗΕVΑJΕΤ","contract":"1237185","startDate":"03/03/2016","annualNetPremium":514.32,"product":"Ν11 FULL"},{"insured":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ","policyholder":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ","contract":"1254371","startDate":"02/06/2016","annualNetPremium":455.38,"product":"ΠΡΟΣΚΑΙΡΗ ΑΣΦΑΛΙΣΗ"},{"insured":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ","policyholder":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ","contract":"1622529","startDate":"26/07/2023","annualNetPremium":368.0,"product":"Ν11 FULL"},{"insured":"ΗΡΑΚΛΕΟΥΣ ΚΟΣΜΑΣ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΗΣ","contract":"1362587","startDate":"05/02/2018","annualNetPremium":724.62,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΑΙΛΑΣ ΕΜΜΑΝΟΥΗΛ","policyholder":"ΚΑΙΛΑΣ ΕΜΜΑΝΟΥΗΛ","contract":"1127590","startDate":"22/11/2013","annualNetPremium":1501.56,"product":"ΠΡΟΣΚΑΙΡΗ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΑΝΔΡΙΝΑΚΟΥ ΑΒΑΠΤΙΣΤΗ","policyholder":"ΣΑΡΑΦΑΔΗ ΕΥΑΝΘΙΑ","contract":"1603935","startDate":"20/01/2023","annualNetPremium":556.31,"product":"Ν11 FULL"},{"insured":"ΚΑΝΔΡΙΝΑΚΟΥ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΣΑΡΑΦΑΔΗ ΕΥΑΝΘΙΑ","contract":"1640509","startDate":"23/01/2024","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ","policyholder":"ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ","contract":"1630992","startDate":"26/10/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ","policyholder":"ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ","contract":"1706159","startDate":"02/03/2026","annualNetPremium":551.44,"product":"Ν11 FULL"},{"insured":"ΚΑΡΑΜΑΝΩΛΑΚΗΣ ΑΝΤΩΝΗΣ","policyholder":"ΚΑΡΑΜΑΝΩΛΑΚΗΣ ΑΝΤΩΝΗΣ","contract":"1371308","startDate":"28/03/2018","annualNetPremium":1144.86,"product":"Ν11 FULL"},{"insured":"ΚΑΡΑΝΙΚΟΛΑΣ ΣΠΥΡΙΔΩΝ","policyholder":"ΚΑΡΑΝΙΚΟΛΑΣ ΣΠΥΡΙΔΩΝ","contract":"915777","startDate":"12/05/2008","annualNetPremium":2078.5,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΑΡΑΤΑΡΑΚΗΣ ΙΩΣΗΦ","policyholder":"ΚΑΡΑΤΑΡΑΚΗΣ ΙΩΣΗΦ","contract":"1694241","startDate":"27/10/2025","annualNetPremium":741.83,"product":"Ν11 FULL"},{"insured":"ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ","policyholder":"ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ","contract":"1617928","startDate":"09/06/2023","annualNetPremium":1549.95,"product":"Ν11 FULL"},{"insured":"ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ","policyholder":"ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ","contract":"1618031","startDate":"09/06/2023","annualNetPremium":1200.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΚΑΤΣΟΥΛΗΣ ΑΡΙΣΤΕΙΔΗΣ","policyholder":"ΚΑΤΣΟΥΛΗΣ ΑΓΓΕΛΟΣ","contract":"1238129","startDate":"11/03/2016","annualNetPremium":788.0,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ","policyholder":"ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ","contract":"1222552","startDate":"15/12/2015","annualNetPremium":730.66,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ","policyholder":"ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ","contract":"1634806","startDate":"01/12/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ","policyholder":"ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1634807","startDate":"01/12/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ","policyholder":"ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1224439","startDate":"22/12/2015","annualNetPremium":774.11,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ","policyholder":"ΜΑGΙΚΑ FΟURΚΑ","contract":"1592662","startDate":"12/10/2022","annualNetPremium":2002.12,"product":"Ν11 FULL"},{"insured":"ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ","policyholder":"ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ","contract":"1702559","startDate":"19/01/2026","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΟΡΩΝΑΚΟΣ ΙΩΑΝΝΗΣ","policyholder":"ΚΟΡΩΝΑΚΟΣ ΑΓΑΜΕΜΝΩΝ","contract":"1652020","startDate":"27/05/2024","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΟΣΜΑ ΑΝΘΟΥΛΑ","policyholder":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΗΣ","contract":"1109367","startDate":"04/06/2013","annualNetPremium":3082.91,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ","policyholder":"GΕΝD DΕVΕLΟΡΜΕΝΤ ΜΟΝΟΠΡΟΣΩΠ","contract":"1456925","startDate":"26/09/2019","annualNetPremium":647.73,"product":"Ν11 FULL"},{"insured":"ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ","policyholder":"ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ","contract":"1659723","startDate":"04/09/2024","annualNetPremium":262.61,"product":"Ν11 FULL"},{"insured":"ΚΟΥΡΗ ΤΑΤΙΑΝΑ","policyholder":"ΓΡΑΨΑ ΦΩΤΕΙΝΗ","contract":"1579031","startDate":"25/05/2022","annualNetPremium":882.57,"product":"Ν11 FULL"},{"insured":"ΚΟΥΡΗ ΤΑΤΙΑΝΑ","policyholder":"ΓΡΑΨΑ ΦΩΤΕΙΝΗ","contract":"1155216","startDate":"15/07/2014","annualNetPremium":31.29,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΚΟΥΡΗΣ ΦΩΤΙΟΣ","policyholder":"ΓΡΑΨΑ ΦΩΤΕΙΝΗ","contract":"1155214","startDate":"15/07/2014","annualNetPremium":35.8,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΟΥΡΗΣ ΦΩΤΙΟΣ","policyholder":"ΓΡΑΨΑ ΦΩΤΕΙΝΗ","contract":"1579036","startDate":"25/05/2022","annualNetPremium":1081.85,"product":"Ν11 FULL"},{"insured":"ΚΟΥΤΡΟΜΑΝΟΥ ΜΑΡΙΑ","policyholder":"ΚΑΠΟΠΟΥΛΟΣ ΔΙΟΝΥΣΙΟΣ","contract":"1217996","startDate":"24/11/2015","annualNetPremium":1125.04,"product":"Ν11 FULL"},{"insured":"ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΑΛΚΙΝΟΟΣ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ","contract":"1657630","startDate":"29/07/2024","annualNetPremium":10000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΑΛΚΙΝΟΟΣ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ.Α.Ε","contract":"1673185","startDate":"27/01/2025","annualNetPremium":10000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ ΟΡΙΚΗΣ","contract":"1668387","startDate":"06/12/2024","annualNetPremium":2240.0,"product":"Ν11 FULL"},{"insured":"ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ","policyholder":"ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ","contract":"1702469","startDate":"19/01/2026","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΡΕΤΣΑΣ ΚΩΝΣΤΑΝΤΙΝ","policyholder":"ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ","contract":"1663068","startDate":"10/10/2024","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΡΕΤΣΑΣ ΠΑΝΤΕΛΗΣ","policyholder":"ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ","contract":"1663053","startDate":"10/10/2024","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ","policyholder":"ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ","contract":"1414677","startDate":"21/12/2018","annualNetPremium":3062.66,"product":"Ν11 FULL"},{"insured":"ΚΥΡΜΠΑΤΣΗΣ ΑΓΓΕΛΟΣ","policyholder":"ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ","contract":"1259711","startDate":"30/06/2016","annualNetPremium":297.56,"product":"Ν11 FULL"},{"insured":"ΚΥΡΜΠΑΤΣΗΣ ΑΓΓΕΛΟΣ","policyholder":"ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ","contract":"1585833","startDate":"25/07/2022","annualNetPremium":38.0,"product":"Ν11 FULL"},{"insured":"ΚΥΡΜΠΑΤΣΗΣ ΚΥΡΙΑΚΟΣ","policyholder":"ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ","contract":"1357830","startDate":"09/01/2018","annualNetPremium":297.2,"product":"Ν11 FULL"},{"insured":"ΚΥΡΜΠΑΤΣΗΣ ΚΥΡΙΑΚΟΣ","policyholder":"ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ","contract":"1585836","startDate":"25/07/2022","annualNetPremium":38.0,"product":"Ν11 FULL"},{"insured":"ΚΩΣΤΑΡΕΛΛΟΣ ΚΩΝ/ΝΟΣ-ΜΑ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ","contract":"1199286","startDate":"01/07/2015","annualNetPremium":66.42,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΚΩΣΤΑΡΕΛΛΟΣ ΚΩΝΣΤ ΜΑΡ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ","contract":"1688124","startDate":"28/07/2025","annualNetPremium":1351.39,"product":"Ν11 FULL"},{"insured":"ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ","contract":"1688123","startDate":"28/07/2025","annualNetPremium":3074.44,"product":"Ν11 FULL"},{"insured":"ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ","contract":"1158935","startDate":"26/08/2014","annualNetPremium":66.53,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΚΩΣΤΑΡΕΛΛΟΥ ΜΑΡΙΑ ΝΕΦΕ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ","contract":"1688127","startDate":"28/07/2025","annualNetPremium":1296.29,"product":"Ν11 FULL"},{"insured":"ΚΩΣΤΑΡΕΛΛΟΥ ΜΑΡΙΑ-ΝΕΦΕ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ","contract":"1199285","startDate":"01/07/2015","annualNetPremium":66.56,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΚΩΤΣΕΛΗ ΧΑΡΑ-ΕΙΡΗΝ","policyholder":"GΕΝD DΕVΕLΟΡΜΕΝΤ ΜΟΝΟΠΡΟΣΩΠ","contract":"1456781","startDate":"26/09/2019","annualNetPremium":1220.36,"product":"Ν11 FULL"},{"insured":"ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ","policyholder":"ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ","contract":"1423866","startDate":"25/02/2019","annualNetPremium":1180.84,"product":"Ν11 FULL"},{"insured":"ΛΕΜΟΝΟΠΟΥΛΟΣ ΦΙΛΟΘΕΟΣ","policyholder":"ΑΦΟΙ ΛΕΜΟΝΟΠΟΥΛΟΥ ΕΠΕ","contract":"1377347","startDate":"11/05/2018","annualNetPremium":713.98,"product":"Ν11 NF"},{"insured":"ΛΙΑΜΗΣ ΘΕΟΔΩΡΟΣ","policyholder":"ΛΙΑΜΗΣ ΘΕΟΔΩΡΟΣ","contract":"1109371","startDate":"31/05/2013","annualNetPremium":2136.8,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΛΙΑΝΟΣ ΑΛΕΞΑΝΔΡΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1700749","startDate":"23/12/2025","annualNetPremium":932.65,"product":"Ν11 FULL"},{"insured":"ΛΙΑΝΟΣ ΑΛΕΞΑΝΔΡΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1626627","startDate":"19/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΛΙΑΝΟΣ ΙΩΑΝΝΗΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1700582","startDate":"23/12/2025","annualNetPremium":1046.43,"product":"Ν11 FULL"},{"insured":"ΛΙΑΝΟΣ ΙΩΑΝΝΗΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1626258","startDate":"14/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΛΙΑΝΟΣ ΙΩΑΝΝΗΣ","policyholder":"ΣΤΡΟΥΓΓΑΡΗ ΑΙΚΑΤΕΡΙΝΗ","contract":"1143295","startDate":"31/03/2014","annualNetPremium":38.59,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΛΙΑΝΟΣ ΝΙΚΟΛΑΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1700549","startDate":"23/12/2025","annualNetPremium":856.79,"product":"Ν11 FULL"},{"insured":"ΛΙΑΝΟΣ ΝΙΚΟΛΑΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1626260","startDate":"14/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1661757","startDate":"26/09/2024","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1661758","startDate":"26/09/2024","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","policyholder":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","contract":"1701090","startDate":"29/12/2025","annualNetPremium":2268.25,"product":"Ν11 FULL"},{"insured":"ΛΙΤΣΙΟΥ ΛΑΟΥΡΑ","policyholder":"ΛΙΤΣΙΟΥ ΛΑΟΥΡΑ","contract":"1417253","startDate":"14/01/2019","annualNetPremium":1070.47,"product":"Ν11 FULL"},{"insured":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ","policyholder":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ","contract":"1558110","startDate":"08/11/2021","annualNetPremium":840.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ","policyholder":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ","contract":"1716075","startDate":"26/06/2026","annualNetPremium":1357.14,"product":"Ν11 FULL"},{"insured":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","policyholder":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","contract":"1202093","startDate":"31/07/2015","annualNetPremium":134.0,"product":"Ν11 FULL"},{"insured":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","policyholder":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","contract":"1130694","startDate":"13/12/2013","annualNetPremium":69.01,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΜΑΓΚΛΑΡΑ ΑΙΚΑΤΕΡΙΝΗ","policyholder":"ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ","contract":"1043263","startDate":"22/09/2011","annualNetPremium":1469.47,"product":"U.L.ΠΡΟΙΟΝΤΑ"},{"insured":"ΜΑΓΚΛΑΡΑ ΑΝΔΡΙΑΝΑ","policyholder":"ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ","contract":"1198586","startDate":"29/06/2015","annualNetPremium":780.98,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΜΑΓΚΛΑΡΑ ΒΑΣΙΛΙΚΗ","policyholder":"ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ","contract":"1043264","startDate":"22/09/2011","annualNetPremium":1580.05,"product":"U.L.ΠΡΟΙΟΝΤΑ"},{"insured":"ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ","policyholder":"ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ","contract":"1660640","startDate":"16/09/2024","annualNetPremium":684.48,"product":"Ν11 FULL"},{"insured":"ΜΑΝΕΤΑ ΔΙΟΝΥΣΙΑ","policyholder":"ΜΑΝΕΤΑ ΔΙΟΝΥΣΙΑ","contract":"1581461","startDate":"17/06/2022","annualNetPremium":1081.85,"product":"Ν11 FULL"},{"insured":"ΜΑΡΚΕΤΟΥ ΑΓΓΕΛΙΚΗ","policyholder":"ΦΟΥΝΤΑ ΣΟΦΙΑ","contract":"1663829","startDate":"18/10/2024","annualNetPremium":960.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΜΑΣΤΡΟΓΙΑΝΝΗΣ ΓΕΩΡΓΙΟΣ","policyholder":"Γ-Θ ΜΑΣΤΡΟΓΙΑΝΝΗΣ Ο.Ε.","contract":"1228833","startDate":"20/01/2016","annualNetPremium":809.78,"product":"Ν11 FULL"},{"insured":"ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ","policyholder":"ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ","contract":"1514702","startDate":"23/10/2020","annualNetPremium":2389.89,"product":"Ν11 FULL"},{"insured":"ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ","policyholder":"ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ","contract":"1623290","startDate":"31/07/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΜΕΤΣΙΟΥ ΑΝΑΣΤΑΣΙΑ","policyholder":"ΜΕΤΣΙΟΥ ΑΝΑΣΤΑΣΙΑ","contract":"1694752","startDate":"03/11/2025","annualNetPremium":941.73,"product":"Ν11 FULL"},{"insured":"ΜΙΧΑΛΟΠΟΥΛΟΣ ΔΙΟΝΥΣΙΟΣ","policyholder":"ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ","contract":"1621894","startDate":"19/07/2023","annualNetPremium":92.0,"product":"Ν11 FULL"},{"insured":"ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ","policyholder":"ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ","contract":"1661340","startDate":"23/09/2024","annualNetPremium":1357.29,"product":"Ν11 FULL"},{"insured":"ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ","policyholder":"ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ","contract":"1629064","startDate":"05/10/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ","policyholder":"ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ","contract":"1225772","startDate":"21/12/2015","annualNetPremium":1721.95,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΜΟΣΚΟΒΙΤΗ ΓΕΩΡ ΚΑΛΛΙ","policyholder":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","contract":"1346693","startDate":"22/11/2017","annualNetPremium":1409.91,"product":"Ν11 FULL"},{"insured":"ΜΟΥΔΑΤΣΟΣ ΚΩΝ/ΝΟΣ","policyholder":"ΜΟΥΔΑΤΣΟΣ ΚΩΝ/ΝΟΣ","contract":"496593","startDate":"15/03/1995","annualNetPremium":0.0,"product":"ΣΥΝΤΑΞΙΟΔΟΤΙΚΟ ΠΡΟΓΡΑΜΜΑ"},{"insured":"ΜΟΥΔΑΤΣΟΣ ΚΩΝ/ΝΟΣ","policyholder":"ΜΟΥΔΑΤΣΟΣ ΚΩΝ/ΝΟΣ","contract":"1215645","startDate":"30/10/2015","annualNetPremium":876.13,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΜΟΥΡΤΖΟΥΚΟΣ ΑΛΕΞΑΝΔΡΟΣ","policyholder":"ΜΟΥΡΤΖΟΥΚΟΣ ΑΛΕΞΑΝΔΡΟΣ","contract":"1363718","startDate":"13/02/2018","annualNetPremium":1207.18,"product":"Ν11 FULL"},{"insured":"ΜΟΥΣΤΑΚΑ ΣΟΦΙΑ ΙΩΑΝ","policyholder":"ΜΟΥΣΤΑΚΑ ΣΟΦΙΑ ΙΩΑΝ","contract":"1671475","startDate":"30/12/2024","annualNetPremium":591.21,"product":"Ν11 FULL"},{"insured":"ΜΠΑΛΤΑΔΩΡΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ","contract":"1700560","startDate":"23/12/2025","annualNetPremium":767.93,"product":"Ν11 FULL"},{"insured":"ΜΠΛΑΤΣΟΥ ΜΕΛΙΝΑ","policyholder":"ΜΠΛΑΤΣΟΣ ΓΕΩΡΓΙΟΣ","contract":"1630199","startDate":"19/10/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΜΠΛΑΤΣΟΥ ΜΕΛΙΝΑ","policyholder":"ΜΠΛΑΤΣΟΣ ΓΕΩΡΓΙΟΣ","contract":"1327621","startDate":"28/07/2017","annualNetPremium":640.92,"product":"Ν11 FULL"},{"insured":"ΜΠΟΖΙΟΣ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΜΠΟΖΙΟΣ ΦΩΤΙΟΣ","contract":"1669455","startDate":"12/12/2024","annualNetPremium":767.93,"product":"Ν11 FULL"},{"insured":"ΜΠΡΕΜΠΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΜΠΡΕΜΠΟΣ ΣΠΥΡΙΔΩΝ","contract":"1630225","startDate":"19/10/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΜΠΡΕΜΠΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΜΠΡΕΜΠΟΣ ΣΠΥΡΙΔΩΝ","contract":"1271453","startDate":"21/09/2016","annualNetPremium":624.29,"product":"Ν11 FULL"},{"insured":"ΜΥΛΩΝΑ ΝΕΚΤΑΡΙΑ","policyholder":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","contract":"1447004","startDate":"22/07/2019","annualNetPremium":687.42,"product":"Ν11 FULL"},{"insured":"ΜΥΛΩΝΑΣ ΒΑΣΙΛΕΙΟΣ","policyholder":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","contract":"1447007","startDate":"22/07/2019","annualNetPremium":801.91,"product":"Ν11 FULL"},{"insured":"ΜΥΛΩΝΑΣ ΒΑΣΙΛΕΙΟΣ","policyholder":"ΙΝΒ ΤΕΧΝΙΚΗ ΕΕ","contract":"1670168","startDate":"18/12/2024","annualNetPremium":1500.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","policyholder":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","contract":"1511244","startDate":"23/09/2020","annualNetPremium":900.0,"product":"ΕΘΝΙΚΗ ΣΥΝΤΑΞΗ"},{"insured":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","policyholder":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","contract":"1619637","startDate":"23/06/2023","annualNetPremium":2400.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΝΙΚΗΦΟΡΟΥ ΜΑΡΙΑ","policyholder":"ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ","contract":"1283496","startDate":"24/11/2016","annualNetPremium":1315.9,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΝΙΚΗΦΟΡΟΥ ΜΑΡΙΑ","policyholder":"ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ","contract":"1477319","startDate":"27/12/2019","annualNetPremium":720.0,"product":"ΕΘΝΙΚΗ ΣΥΝΤΑΞΗ"},{"insured":"ΝΙΚΗΦΟΡΟΥ ΜΑΡΙΑ","policyholder":"ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ","contract":"1283500","startDate":"24/11/2016","annualNetPremium":372.0,"product":"Ν11 FULL"},{"insured":"ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ","policyholder":"ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ","contract":"1538929","startDate":"03/05/2021","annualNetPremium":960.0,"product":"ΕΘΝΙΚΗ ΣΥΝΤΑΞΗ"},{"insured":"ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ","policyholder":"ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ","contract":"1604604","startDate":"27/01/2023","annualNetPremium":2000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΟΚΟΝΝΟΡ ΓΕΩΡΓΙΟΣ","policyholder":"ΟΚΟΝΝΟΡ ΑΛΕΞΑΝΔΡΟΣ","contract":"1649284","startDate":"22/04/2024","annualNetPremium":703.57,"product":"Ν11 FULL"},{"insured":"ΟΚΟΝΝΟΡ ΙΩΑΝΝΗΣ","policyholder":"ΟΚΟΝΝΟΡ ΑΛΕΞΑΝΔΡΟΣ","contract":"1649397","startDate":"23/04/2024","annualNetPremium":703.57,"product":"Ν11 FULL"},{"insured":"ΠΑΙΚΟΥΛΑΣ ΒΑΣΙΛΕΙΟΣ","policyholder":"ΠΑΙΚΟΥΛΑΣ ΒΑΣΙΛΕΙΟΣ","contract":"1625312","startDate":"05/09/2023","annualNetPremium":511.73,"product":"Ν11 FULL"},{"insured":"ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ ΜΙΧΑΗΛ","policyholder":"ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ ΜΙΧΑΗΛ","contract":"1678136","startDate":"24/03/2025","annualNetPremium":656.59,"product":"Ν11 FULL"},{"insured":"ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ ΑΣΗΜΙΝΑ","policyholder":"ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ ΑΣΗΜΙΝΑ","contract":"1369241","startDate":"20/03/2018","annualNetPremium":1336.08,"product":"Ν11 FULL"},{"insured":"ΠΑΝΟΣ ΧΡΗΣΤΟΣ","policyholder":"ΜΑGΙCΑ FΟURΚΑ SΕRVΙ FΑCΙLΙΤΥ Μ","contract":"1659857","startDate":"04/09/2024","annualNetPremium":202.61,"product":"Ν11 FULL"},{"insured":"ΠΑΝΟΣ ΧΡΗΣΤΟΣ","policyholder":"ΜΑGΙCΑ FΟURΚΑ","contract":"1667925","startDate":"03/12/2024","annualNetPremium":3261.38,"product":"Ν11 FULL"},{"insured":"ΠΑΝΟΥ ΑΔΑΜΑΝΤΙΑ","policyholder":"ΜΑGΙCΑ FΟURΚΑ SΕRVΙC FΑCΙLΙΤΥ Μ","contract":"1659858","startDate":"04/09/2024","annualNetPremium":82.61,"product":"Ν11 FULL"},{"insured":"ΠΑΝΟΥ ΑΔΑΜΑΝΤΙΑ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ","contract":"1657629","startDate":"29/07/2024","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΠΑΝΟΥ ΑΔΑΜΑΝΤΙΑ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ","contract":"1673188","startDate":"27/01/2025","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΠΑΝΟΥ ΑΔΑΜΑΝΤΙΑ","policyholder":"Α 2 Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡ ΟΦΟΡΙΚΗΣ","contract":"1701370","startDate":"30/12/2025","annualNetPremium":2500.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΠΑΝΟΥ ΜΑΡΙΑ","policyholder":"Α 2 Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡ ΟΦΟΡΙΚΗΣ","contract":"1701373","startDate":"30/12/2025","annualNetPremium":2500.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΠΑΝΟΥ ΜΑΡΙΑ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ.Α.Ε","contract":"1673191","startDate":"27/01/2025","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΠΑΝΟΥ ΜΑΡΙΑ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ","contract":"1657627","startDate":"29/07/2024","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΠΑΝΤΑΖΗΣ ΧΡΗΣΤΟΣ","policyholder":"ΜΑΓΚΛΑΡΑ ΣΟΦΙΑ","contract":"1300321","startDate":"13/02/2017","annualNetPremium":533.95,"product":"Ν11 FULL"},{"insured":"ΠΑΠΑΓΕΩΡΓΙΟΥ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΜΑΚΡΗ ΚΥΡΙΑΚΗ","contract":"1712197","startDate":"12/05/2026","annualNetPremium":703.57,"product":"Ν11 FULL"},{"insured":"ΠΑΠΑΓΕΩΡΓΙΟΥ ΙΑΣΩΝ","policyholder":"ΜΑΚΡΗ ΚΥΡΙΑΚΗ","contract":"1679600","startDate":"10/04/2025","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΠΑΠΑΓΕΩΡΓΙΟΥ ΙΑΣΩΝ","policyholder":"ΜΑΚΡΗ ΚΥΡΙΑΚΗ","contract":"1616455","startDate":"25/05/2023","annualNetPremium":509.19,"product":"Ν11 FULL"},{"insured":"ΠΑΠΑΔΑΚΗ ΜΑΡΙΑ","policyholder":"ΠΑΠΑΔΑΚΗ ΜΑΡΙΑ","contract":"1147782","startDate":"09/05/2014","annualNetPremium":1175.51,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΠΑΥΛΟΠΟΥΛΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΠΑΥΛΟΠΟΥΛΟΣ ΓΕΩΡΓΙΟΣ","contract":"1410859","startDate":"13/12/2018","annualNetPremium":1827.44,"product":"Ν11 FULL"},{"insured":"ΠΛΑΚΑΛΗ ΕΛΕΝΗ","policyholder":"ΠΛΑΚΑΛΗ ΕΛΕΝΗ","contract":"1654762","startDate":"25/06/2024","annualNetPremium":1447.44,"product":"Ν11 FULL"},{"insured":"ΠΛΑΣΑΡΑ ΕΛΛΗ","policyholder":"ΚΩΣΤΑΡΕΛΛΟΣ Ε.Π.Ε.","contract":"1665804","startDate":"11/11/2024","annualNetPremium":1183.66,"product":"Ν11 FULL"},{"insured":"ΠΥΡΓΙΕΡΗΣ ΑΝΑΣΤΑΣΙΟΣ","policyholder":"ΠΥΡΓΙΕΡΗΣ ΑΝΑΣΤΑΣΙΟΣ","contract":"1697737","startDate":"03/12/2025","annualNetPremium":749.83,"product":"Ν11 FULL"},{"insured":"ΡΑΙΚΟΣ ΔΗΜΗΤΡΙΟΣ","policyholder":"ΡΑΙΚΟΣ ΘΩΜΑΣ","contract":"1306485","startDate":"24/03/2017","annualNetPremium":334.05,"product":"Ν11 FULL"},{"insured":"ΡΑΙΚΟΣ ΘΩΜΑΣ","policyholder":"ΡΑΙΚΟΣ ΘΩΜΑΣ","contract":"1306483","startDate":"24/03/2017","annualNetPremium":2196.03,"product":"Ν11 FULL"},{"insured":"ΡΑΙΚΟΣ ΚΩΝ/ΝΟΣ","policyholder":"ΡΑΙΚΟΣ ΘΩΜΑΣ","contract":"1306486","startDate":"24/03/2017","annualNetPremium":353.18,"product":"Ν11 FULL"},{"insured":"ΡΗΝΑΚΗ ΑΒΑΠΤΙΣΤΗ","policyholder":"ΡΗΝΑΚΗΣ ΠΑΡΑΣΚΕΥΑΣ","contract":"1564325","startDate":"24/12/2021","annualNetPremium":556.31,"product":"Ν11 FULL"},{"insured":"ΡΗΝΑΚΗ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΡΗΝΑΚΗΣ ΠΑΡΑΣΚΕΥΑΣ","contract":"1668886","startDate":"11/12/2024","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΡΙΖΕΣ ΕΥΘΥΜΙΟΣ","policyholder":"ΡΙΖΕΣ ΕΥΘΥΜΙΟΣ","contract":"1577493","startDate":"12/05/2022","annualNetPremium":1088.2,"product":"Ν11 FULL"},{"insured":"ΡΙΖΟΠΟΥΛΟΣ ΓΡΗΓΟΡΙΟΣ","policyholder":"ΡΙΖΟΠΟΥΛΟΣ ΓΡΗΓΟΡΙΟΣ","contract":"1634978","startDate":"04/12/2023","annualNetPremium":1257.72,"product":"Ν11 FULL"},{"insured":"ΣΑΒΒΑΤΑΚΗΣ ΒΑΣΙΛΗΣ","policyholder":"ΣΑΒΒΑΤΑΚΗΣ ΓΕΩΡΓΙΟΣ","contract":"1540618","startDate":"26/05/2021","annualNetPremium":720.0,"product":"ΕΘΝΙΚΗ ΚΑΙ ΠΑΙΔΙ"},{"insured":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","policyholder":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","contract":"1454079","startDate":"10/09/2019","annualNetPremium":160.79,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","policyholder":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","contract":"1454080","startDate":"10/09/2019","annualNetPremium":134.0,"product":"Ν11 FULL"},{"insured":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","policyholder":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","contract":"1698935","startDate":"12/12/2025","annualNetPremium":839.79,"product":"Ν11 FULL"},{"insured":"ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ ΑΛΕΞΑΝΔΡΟΣ","policyholder":"ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ ΑΛΕΞΑΝΔΡΟΣ","contract":"1152297","startDate":"24/06/2014","annualNetPremium":1140.11,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΣΑΚΚΑ ΕΙΡΗΝΗ","policyholder":"ΣΑΚΚΑ ΕΙΡΗΝΗ","contract":"1143279","startDate":"28/03/2014","annualNetPremium":1029.46,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΣΑΚΚΑ ΕΙΡΗΝΗ","policyholder":"ΣΑΚΚΑ ΕΙΡΗΝΗ","contract":"1631540","startDate":"01/11/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΣΑΝΤΑΜΟΥΡΗ ΓΕΩΡΓΙΑ","policyholder":"ΣΑΝΤΑΜΟΥΡΗ ΓΕΩΡΓΙΑ","contract":"1696010","startDate":"17/11/2025","annualNetPremium":1090.17,"product":"Ν11 FULL"},{"insured":"ΣΑΡΑΦΑΔΗ ΜΑΓΔΑΛΗΝΗ","policyholder":"ΣΑΡΑΦΑΔΗ ΜΑΓΔΑΛΗΝΗ","contract":"1681917","startDate":"14/05/2025","annualNetPremium":1284.38,"product":"Ν11 FULL"},{"insured":"ΣΔΡΕΝΙΑ ΠΑΡΑΣΚΕΥΗ","policyholder":"ΣΔΡΕΝΙΑ ΠΑΡΑΣΚΕΥΗ","contract":"1712832","startDate":"20/05/2026","annualNetPremium":288.48,"product":"Ν11 FULL"},{"insured":"ΣΔΡΕΝΙΑΣ ΧΡΗΣΤΟΣ","policyholder":"ΣΔΡΕΝΙΑΣ ΧΡΗΣΤΟΣ","contract":"1713145","startDate":"21/05/2026","annualNetPremium":269.27,"product":"Ν11 FULL"},{"insured":"ΣΕΦΕΡΛΗ ΓΕΩΡΓΙΑ","policyholder":"ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ","contract":"1678364","startDate":"27/03/2025","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΣΕΦΕΡΛΗ ΓΕΩΡΓΙΑ","policyholder":"ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ","contract":"1558934","startDate":"15/11/2021","annualNetPremium":556.31,"product":"Ν11 FULL"},{"insured":"ΣΕΦΕΡΛΗ ΜΑΡΙΑ","policyholder":"ΣΕΦΕΡΛΗΣ ΓΕΩΡΓΙΟΣ","contract":"1492125","startDate":"28/04/2020","annualNetPremium":509.19,"product":"Ν11 FULL"},{"insured":"ΣΕΦΕΡΛΗΣ ΕΛΕΥΘΕΡΙΟΣ","policyholder":"ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ","contract":"1617410","startDate":"01/06/2023","annualNetPremium":509.19,"product":"Ν11 FULL"},{"insured":"ΣΕΦΕΡΛΗΣ ΕΛΕΥΘΕΡΙΟΣ","policyholder":"ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ","contract":"1678363","startDate":"27/03/2025","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΣΕΦΕΡΛΗΣ ΦΩΤΙΟΣ","policyholder":"ΣΕΦΕΡΛΗΣ ΓΕΩΡΓΙΟΣ","contract":"1492122","startDate":"28/04/2020","annualNetPremium":509.19,"product":"Ν11 FULL"},{"insured":"ΣΙΑΚΑΒΑΡΑ ΚΩΝΣΤΑΝΤΙΝ","policyholder":"ΙΝΒ ΤΕΧΝΙΚΗ","contract":"1670169","startDate":"18/12/2024","annualNetPremium":1500.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΣΙΑΠΛΑΟΥΡΑ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΣΙΑΠΛΑΟΥΡΑΣ ΜΑΡΙΟΣ","contract":"1627365","startDate":"20/09/2023","annualNetPremium":532.46,"product":"Ν11 FULL"},{"insured":"ΣΙΑΠΛΑΟΥΡΑΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΣΙΑΠΛΑΟΥΡΑΣ ΜΑΡΙΟΣ","contract":"1464709","startDate":"06/11/2019","annualNetPremium":518.31,"product":"Ν11 FULL"},{"insured":"ΣΠΑΝΟΜΑΡΙΔΗ ΣΟΦΙΑ","policyholder":"ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ","contract":"1421428","startDate":"01/02/2019","annualNetPremium":340.92,"product":"Ν11 FULL"},{"insured":"ΣΤΕΡΓΙΟΥ ΣΟΦΙΑ","policyholder":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ ΟΡΙΚΗΣ","contract":"1669963","startDate":"18/12/2024","annualNetPremium":1520.41,"product":"Ν11 FULL"},{"insured":"ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ","policyholder":"ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ","contract":"1631470","startDate":"01/11/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ","policyholder":"ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ","contract":"1298263","startDate":"02/02/2017","annualNetPremium":1028.23,"product":"Ν11 NF"},{"insured":"ΣΥΡΙΓΟΣ ΧΡΗΣΤΟΣ","policyholder":"ΣΥΡΙΓΟΣ ΧΡΗΣΤΟΣ","contract":"1573554","startDate":"28/03/2022","annualNetPremium":2343.59,"product":"Ν11 FULL"},{"insured":"ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ","contract":"1456408","startDate":"24/09/2019","annualNetPremium":573.4,"product":"Ν11 FULL"},{"insured":"ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ","contract":"1625305","startDate":"05/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΣΩΤΗΡΙΑΔΗΣ ΣΤΑΥΡΟΣ","policyholder":"ΣΩΤΗΡΙΑΔΗΣ ΣΤΑΥΡΟΣ Μ ΙΚΕ","contract":"1682814","startDate":"23/05/2025","annualNetPremium":525.9,"product":"Ν11 FULL"},{"insured":"ΤΑΓΚΑΛΟΥ ΑΓΓΕΛΙΚΗ","policyholder":"ΚΥΡΙΑΚΟΠΟΥΛΟΣ ΚΥΡΙΑΚΟΣ","contract":"1140733","startDate":"07/03/2014","annualNetPremium":3746.35,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΤΕΡΖΗ ΞΑΝΘΙΠΠΗ","policyholder":"ΠΑΡΙΣΗΣ ΑΓΓΕΛΟΣ","contract":"1414251","startDate":"24/12/2018","annualNetPremium":1000.0,"product":"ΕΘΝΙΚΗ ΣΥΝΤΑΞΗ"},{"insured":"ΤΖΩΡΤΖΟΠΟΥΛΟΣ ΑΡΡΕΝ","policyholder":"ΤΖΩΡΤΖΟΠΟΥΛΟΣ ΑΓΓΕΛΟΣ","contract":"1622326","startDate":"25/07/2023","annualNetPremium":564.46,"product":"Ν11 FULL"},{"insured":"ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ","policyholder":"ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ","contract":"1579447","startDate":"27/05/2022","annualNetPremium":1162.52,"product":"Ν11 FULL"},{"insured":"ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ","policyholder":"ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ","contract":"1625302","startDate":"05/09/2023","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΤΣΑΚΑΝΙΚΑ ΑΙΚΑΤΕΡΙΝΗ","policyholder":"Ι.ΤΣΑΚΑΝΙΚΑ Α.Ε. ΟΙΝΟΠΟΙΙΑ","contract":"1252669","startDate":"20/05/2016","annualNetPremium":3211.66,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε","contract":"1554327","startDate":"30/09/2021","annualNetPremium":1023.63,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε","contract":"1700960","startDate":"24/12/2025","annualNetPremium":1500.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ","policyholder":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε","contract":"1671823","startDate":"08/01/2025","annualNetPremium":240.0,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΣ ΚΩΝ/ΝΟΣ","policyholder":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε","contract":"1337045","startDate":"06/10/2017","annualNetPremium":652.22,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΥ ΕΛΕΑΝΝΑ","policyholder":"ΤΣΕΡΤΟΥ ΕΛΕΑΝΝΑ","contract":"1353899","startDate":"21/12/2017","annualNetPremium":697.51,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΥ ΕΥΑΓΓΕΛΙΑ","policyholder":"ΤΣΕΡΤΟΣ ΑΝΔΡΕΑΣ","contract":"1366901","startDate":"06/03/2018","annualNetPremium":4078.26,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΥ ΜΕΡΟΠΗ ΑΡΤ","policyholder":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε","contract":"1415502","startDate":"28/12/2018","annualNetPremium":518.31,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ","policyholder":"ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ","contract":"1238716","startDate":"08/03/2016","annualNetPremium":585.29,"product":"Ν11 FULL"},{"insured":"ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ","policyholder":"ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ","contract":"1238717","startDate":"08/03/2016","annualNetPremium":79.05,"product":"ΠΡΟΣΚΑΙΡΗ ΑΣΦΑΛΙΣΗ"},{"insured":"ΤΣΙΑΝΤΟΥΚΑ ΕΛΕΝΗ","policyholder":"ΤΣΙΑΝΤΟΥΚΑΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1128043","startDate":"28/11/2013","annualNetPremium":792.79,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΤΣΙΑΝΤΟΥΚΑ ΘΥΛΗ","policyholder":"ΤΣΙΑΝΤΟΥΚΑΣ ΠΑΝΑΓΙΩΤΗΣ","contract":"1203826","startDate":"25/08/2015","annualNetPremium":758.32,"product":"ΠΑΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ - ΠΡΟΓΡΑΜΜΑ ΕΠΙΒΙΩΣΗΣ"},{"insured":"ΤΣΙΛΙΚΑΣ ΑΒΑΠΤΙΣΤΟ","policyholder":"ΤΣΙΛΙΚΑΣ ΚΩΝΣΤΑΝΤΙΝ","contract":"1692812","startDate":"10/10/2025","annualNetPremium":235.15,"product":"Ν11 FULL"},{"insured":"ΤΣΙΜΠΙΔΑΣ ΣΤΑΥΡΟΣ","policyholder":"ΤΣΙΜΠΙΔΑΣ ΣΤΑΥΡΟΣ","contract":"1103682","startDate":"11/04/2013","annualNetPremium":781.65,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΤΣΙΟΥΜΠΡΗΣ ΧΑΡΑΛΑΜΠΟΣ","policyholder":"ΤΣΙΟΥΜΠΡΗΣ ΧΑΡΑΛΑΜΠΟΣ","contract":"1165936","startDate":"21/10/2014","annualNetPremium":292.24,"product":"ΠΡΟΣΚΑΙΡΗ ΑΣΦΑΛΙΣΗ ΜΕΙΩΜΕΝΟΥ ΚΕΦΑΛΑΙΟΥ"},{"insured":"ΤΣΙΠΡΑ ΕΥΑΓΓΕΛΙΑ","policyholder":"ΤΣΙΠΡΑ ΕΥΑΓΓΕΛΙΑ","contract":"1205414","startDate":"08/09/2015","annualNetPremium":144.51,"product":"ΠΡΟΣΚΑΙΡΗ ΑΣΦΑΛΙΣΗ"},{"insured":"ΦΕΤΣΗ ΑΛΙΚΗ","policyholder":"ΚΑΤΣΙΑΠΗ ΒΑΣΙΛΙΚΗ","contract":"1319371","startDate":"12/06/2017","annualNetPremium":1121.87,"product":"Ν11 FULL"},{"insured":"ΦΙΛΙΠΠΟΥ ΑΓΓΕ-ΙΩΑΝΝ","policyholder":"ΦΙΛΙΠΠΟΥ ΙΑΚΩΒΟΣ","contract":"1400040","startDate":"15/10/2018","annualNetPremium":801.91,"product":"Ν11 FULL"},{"insured":"ΦΙΛΙΠΠΟΥ ΜΑΡΙΟΣ","policyholder":"ΦΙΛΙΠΠΟΥ ΙΑΚΩΒΟΣ","contract":"1400041","startDate":"15/10/2018","annualNetPremium":712.54,"product":"Ν11 FULL"},{"insured":"ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ","policyholder":"ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ","contract":"1633896","startDate":"23/11/2023","annualNetPremium":5000.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΦΙΛΟΠΟΥΛΟΥ ΕΥΑΓΓΕΛΙΑ","policyholder":"ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ","contract":"1475198","startDate":"13/12/2019","annualNetPremium":839.83,"product":"Ν11 FULL"},{"insured":"ΦΙΛΟΠΟΥΛΟΥ ΧΡΥΣΑΝΘΗ","policyholder":"ΦΙΛΟΠΟΥΛΟΥ ΧΡΥΣΑΝΘΗ","contract":"1577304","startDate":"11/05/2022","annualNetPremium":801.82,"product":"Ν11 FULL"},{"insured":"ΦΟΥΝΤΑ ΣΟΦΙΑ","policyholder":"ΦΟΥΝΤΑ ΣΟΦΙΑ","contract":"1663831","startDate":"18/10/2024","annualNetPremium":960.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΦΟΥΝΤΑ ΣΟΦΙΑ","policyholder":"ΦΟΥΝΤΑ ΣΟΦΙΑ","contract":"1664537","startDate":"25/10/2024","annualNetPremium":724.69,"product":"Ν11 FULL"},{"insured":"ΦΟΥΝΤΑΣ ΧΑΡΑΛΑΜΠΟΣ","policyholder":"ΦΟΥΝΤΑΣ ΧΑΡΑΛΑΜΠΟΣ","contract":"1640746","startDate":"25/01/2024","annualNetPremium":569.01,"product":"Ν11 FULL"},{"insured":"ΦΟΥΣΤΕΡΗ ΑΝΘΙΑ","policyholder":"ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ","contract":"1573507","startDate":"29/03/2022","annualNetPremium":268.26,"product":"ΙΣΟΒΙΑ ΑΣΦΑΛΙΣΗ"},{"insured":"ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ","policyholder":"ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ","contract":"1356204","startDate":"27/12/2017","annualNetPremium":1171.0,"product":"Ν11 FULL"},{"insured":"ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ","policyholder":"ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ","contract":"1627673","startDate":"26/09/2023","annualNetPremium":240.0,"product":"Ν11 FULL"},{"insured":"ΦΡΑΝΤΖΕΣΚΟΥ ΑΝΝΑ - ΜΑΡ","policyholder":"ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ","contract":"1702560","startDate":"19/01/2026","annualNetPremium":60.0,"product":"Ν11 FULL"},{"insured":"ΦΡΑΝΤΖΕΣΚΟΥ ΑΝΝΑ-ΜΑΡΙΑ","policyholder":"ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ","contract":"1593141","startDate":"18/10/2022","annualNetPremium":859.5,"product":"Ν11 FULL"},{"insured":"ΦΡΕΤΖΑΓΙΑΣ ΑΛΚΙΒΙΑΔΗΣ","policyholder":"ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ","contract":"1709777","startDate":"09/04/2026","annualNetPremium":324.89,"product":"Ν11 FULL"},{"insured":"ΧΑΒΔΟΥΛΑ ΙΟΥΛΙΑ","policyholder":"ΧΑΒΔΟΥΛΑ ΙΟΥΛΙΑ","contract":"1660716","startDate":"17/09/2024","annualNetPremium":1200.0,"product":"FULL ΕΠΕΝΔΥΣΗ"},{"insured":"ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ","policyholder":"ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ","contract":"1659670","startDate":"31/08/2024","annualNetPremium":1355.31,"product":"Ν11 FULL"},{"insured":"ΧΑΤΖΗΝΙΚΟΛΑΟΥ ΜΑΡΙΑ","policyholder":"ΧΑΤΖΗΝΙΚΟΛΑΟΥ ΜΑΡΙΑ","contract":"1411678","startDate":"14/12/2018","annualNetPremium":975.07,"product":"Ν11 FULL"},{"insured":"ΧΑΤΖΟΠΟΥΛΟΥ ΘΕΩΝΗ","policyholder":"ΣΔΡΕΝΙΑΣ ΚΩΝΣΤΑΝΤΙΝ","contract":"1712943","startDate":"21/05/2026","annualNetPremium":1442.11,"product":"Ν11 FULL"},{"insured":"ΧΟΤΖΟΓΛΟΥ ΧΡΙΣΤΙΝΑ","policyholder":"ΚΟΡΩΝΑΚΟΣ ΑΓΑΜΕΜΝΩΝ","contract":"1477502","startDate":"30/12/2019","annualNetPremium":2442.36,"product":"Ν11 FULL"},{"insured":"ΨΥΛΛΙΑ ΣΤΑΥΡΟΥΛΑ","policyholder":"ΨΥΛΛΙΑ ΣΤΑΥΡΟΥΛΑ","contract":"1344609","startDate":"13/11/2017","annualNetPremium":1743.16,"product":"Ν11 FULL"}];
+
+    const views = [...document.querySelectorAll(".view")];
+    const searchInput = document.getElementById("surnameSearch");
+    const clearButton = document.getElementById("clearSearch");
+    const resultArea = document.getElementById("resultArea");
+    const summaryCard = document.getElementById("summaryCard");
+    const premiumTotal = document.getElementById("premiumTotal");
+    const policyTotal = document.getElementById("policyTotal");
+
+    const euro = new Intl.NumberFormat("el-GR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
+    function normalizeGreek(value) {
+      return String(value ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLocaleUpperCase("el-GR")
+        .replace(/[^Α-ΩA-Z0-9]+/g, " ")
+        .trim()
+        .replace(/\s+/g, " ");
+    }
+
+    function surnameVariants(value) {
+      const surname = normalizeGreek(value).split(" ")[0] || "";
+      const variants = new Set([surname]);
+
+      if (surname.length < 3) return variants;
+
+      if (surname.endsWith("ΗΣ")) variants.add(surname.slice(0, -1));
+      if (surname.endsWith("Η")) variants.add(surname + "Σ");
+      if (surname.endsWith("ΑΣ")) variants.add(surname.slice(0, -1));
+      if (surname.endsWith("Α")) variants.add(surname + "Σ");
+      if (surname.endsWith("ΟΣ")) variants.add(surname.slice(0, -2) + "ΟΥ");
+      if (surname.endsWith("ΟΥ")) variants.add(surname.slice(0, -2) + "ΟΣ");
+      if (surname.endsWith("Σ")) variants.add(surname.slice(0, -1));
+
+      return variants;
+    }
+
+    function tokenMatches(nameToken, queryToken) {
+      if (!nameToken || !queryToken) return false;
+      return nameToken === queryToken ||
+        nameToken.startsWith(queryToken) ||
+        queryToken.startsWith(nameToken);
+    }
+
+    function surnameTokenMatches(nameToken, queryToken) {
+      if (tokenMatches(nameToken, queryToken)) return true;
+
+      const queryVariants = surnameVariants(queryToken);
+      const nameVariants = surnameVariants(nameToken);
+
+      for (const variant of queryVariants) {
+        if (nameVariants.has(variant)) return true;
+      }
+      return false;
+    }
+
+    function personMatches(personName, rawQuery) {
+      const query = normalizeGreek(rawQuery);
+      if (!query) return false;
+
+      const fullName = normalizeGreek(personName);
+      const nameTokens = fullName.split(" ").filter(Boolean);
+      const queryTokens = query.split(" ").filter(Boolean);
+
+      if (!nameTokens.length || !queryTokens.length) return false;
+
+      // Άμεση αντιστοίχιση ολόκληρης φράσης.
+      if (fullName.includes(query)) return true;
+
+      // Με ένα μόνο λεκτικό γίνεται αναζήτηση επωνύμου,
+      // μαζί με τις συνήθεις ανδρικές/γυναικείες καταλήξεις.
+      if (queryTokens.length === 1) {
+        return surnameTokenMatches(nameTokens[0], queryTokens[0]);
+      }
+
+      // Με επώνυμο και όνομα απαιτούνται και τα δύο:
+      // το πρώτο λεκτικό αντιστοιχεί στο επώνυμο και όλα τα επόμενα
+      // πρέπει να υπάρχουν στο υπόλοιπο ονοματεπώνυμο.
+      if (!surnameTokenMatches(nameTokens[0], queryTokens[0])) return false;
+
+      const remainingNameTokens = nameTokens.slice(1);
+      return queryTokens.slice(1).every(queryToken =>
+        remainingNameTokens.some(nameToken => tokenMatches(nameToken, queryToken))
+      );
+    }
+
+    function parseGreekDate(value) {
+      const match = String(value).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (!match) return 0;
+      return new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1])).getTime();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function highlight(value, rawQuery) {
+      const text = String(value ?? "");
+      const queryTokens = normalizeGreek(rawQuery).split(" ").filter(Boolean);
+      if (!queryTokens.length) return escapeHtml(text);
+
+      const words = text.split(/(\s+)/);
+      return words.map((word, index) => {
+        const normalizedWord = normalizeGreek(word);
+        if (!normalizedWord) return escapeHtml(word);
+
+        const isFirstNameToken =
+          text.slice(0, text.indexOf(word)).trim().length === 0;
+
+        const isMatch = queryTokens.some((queryToken, queryIndex) =>
+          queryIndex === 0 && isFirstNameToken
+            ? surnameTokenMatches(normalizedWord, queryToken)
+            : tokenMatches(normalizedWord, queryToken)
+        );
+
+        return isMatch ? `<mark>${escapeHtml(word)}</mark>` : escapeHtml(word);
+      }).join("");
+    }
+
+    function showView(id) {
+      views.forEach(view => view.classList.toggle("active", view.id === id));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (id === "lifeView") {
+        setTimeout(() => searchInput.focus({ preventScroll: true }), 100);
+      }
+    }
+
+    document.querySelectorAll("[data-target]").forEach(button => {
+      button.addEventListener("click", () => showView(button.dataset.target));
+    });
+
+    document.querySelectorAll("[data-home]").forEach(button => {
+      button.addEventListener("click", () => showView("homeView"));
+    });
+
+    function renderResults() {
+      const query = searchInput.value.trim();
+      clearButton.classList.toggle("visible", query.length > 0);
+
+      if (normalizeGreek(query).length < 2) {
+        resultArea.innerHTML = `
+          <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">🔎</span>
+            Ξεκίνα πληκτρολογώντας τουλάχιστον 2 χαρακτήρες.
+          </div>`;
+        summaryCard.classList.remove("visible");
+        return;
+      }
+
+      const matches = LIFE_RECORDS
+        .filter(record =>
+          personMatches(record.insured, query) ||
+          personMatches(record.policyholder, query)
+        )
+        .sort((a, b) => parseGreekDate(b.startDate) - parseGreekDate(a.startDate));
+
+      if (!matches.length) {
+        resultArea.innerHTML = `
+          <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">∅</span>
+            Δεν βρέθηκε εγγραφή για την αναζήτηση <strong>${escapeHtml(query)}</strong>.
+          </div>`;
+        summaryCard.classList.remove("visible");
+        return;
+      }
+
+      const cards = matches.map(record => `
+        <article class="policy-card">
+          <div class="policy-main">
+            <div>
+              <span class="policy-number">Συμβόλαιο #${escapeHtml(record.contract)}</span>
+              <div class="policy-date">Έναρξη: ${escapeHtml(record.startDate || "—")}</div>
+              ${record.product ? `<div class="policy-product">${escapeHtml(record.product)}</div>` : ""}
+            </div>
+            <div class="premium">
+              <span class="premium-label">Ετήσια καθαρά ασφάλιστρα</span>
+              <strong>${euro.format(Number(record.annualNetPremium) || 0)}</strong>
+            </div>
+          </div>
+          <div class="people">
+            <div class="person-box">
+              <small>Ασφαλισμένος</small>
+              <span>${highlight(record.insured || "—", query)}</span>
+            </div>
+            <div class="person-box">
+              <small>Συμβαλλόμενος</small>
+              <span>${highlight(record.policyholder || "—", query)}</span>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      resultArea.innerHTML = `
+        <div class="results-header">
+          <h3>Αποτελέσματα</h3>
+          <span class="results-count">${matches.length} ${matches.length === 1 ? "εγγραφή" : "εγγραφές"}</span>
+        </div>
+        <div class="results-list">${cards}</div>`;
+
+      const total = matches.reduce((sum, record) => sum + (Number(record.annualNetPremium) || 0), 0);
+      premiumTotal.textContent = euro.format(total);
+      policyTotal.textContent = String(matches.length);
+      summaryCard.classList.add("visible");
+    }
+
+    let searchTimer;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(renderResults, 110);
+    });
+
+    clearButton.addEventListener("click", () => {
+      searchInput.value = "";
+      renderResults();
+      searchInput.focus();
+    });
+
+    searchInput.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        searchInput.value = "";
+        renderResults();
+      }
+    });
+  </script>
+
+  <script>
+    (() => {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isStandalone = window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true;
+      const tip = document.getElementById("iosInstallTip");
+      const close = document.getElementById("closeIosTip");
+
+      if (isIOS && !isStandalone && localStorage.getItem("hideIosInstallTip") !== "1") {
+        tip?.classList.add("visible");
+      }
+
+      close?.addEventListener("click", () => {
+        tip?.classList.remove("visible");
+        localStorage.setItem("hideIosInstallTip", "1");
+      });
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {
+            // Η εφαρμογή εξακολουθεί να λειτουργεί online ακόμη κι αν αποτύχει το offline cache.
+          });
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
