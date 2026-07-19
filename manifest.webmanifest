@@ -1,9 +1,9 @@
 {
   "name": "Χαρτοφυλάκιο Ασφαλίσεων",
   "short_name": "Χαρτοφυλάκιο",
-  "description": "Έλεγχος ασφαλιστικών συμβολαίων Ζωής, Αυτοκινήτου και Πυρός.",
+  "description": "Έλεγχος ασφαλιστικών συμβολαίων και μεικτών ασφαλίστρων.",
   "lang": "el",
-  "start_url": "./",
+  "start_url": "./index.html?v=11",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -11,13 +11,13 @@
   "theme_color": "#10233f",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "./icon-192.png?v=11",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon-512.png",
+      "src": "./icon-512.png?v=11",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

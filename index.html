@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#10233f">
-  <title>Χαρτοφυλάκιο Ασφαλίσεων · v5</title>
+  <title>Χαρτοφυλάκιο Ασφαλίσεων · v11</title>
   <style>
     :root {
       --navy: #10233f;
@@ -308,6 +308,173 @@
       margin-top: 22px;
     }
 
+    .candidate-panel {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 10px 30px rgba(16,35,63,.07);
+    }
+
+    .candidate-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .candidate-status strong {
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .candidate-status span {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .candidate-query {
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .candidate-panel h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .candidate-panel p {
+      margin: 7px 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .candidate-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .candidate-card {
+      width: 100%;
+      min-height: 92px;
+      padding: 15px;
+      border: 1px solid #d7e0eb;
+      border-radius: 15px;
+      text-align: left;
+      color: var(--text);
+      background: #fff;
+      cursor: pointer;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .candidate-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--blue);
+      box-shadow: 0 10px 25px rgba(36,99,168,.12);
+    }
+
+    .candidate-card:active {
+      transform: translateY(0);
+    }
+
+    .candidate-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .candidate-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .role-badge,
+    .policy-count-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .role-badge {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .policy-count-badge {
+      color: var(--green);
+      background: #e9f7f2;
+    }
+
+    .alias-count-badge {
+      color: #785700;
+      background: #fff3c9;
+    }
+
+    .alias-note {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .selected-person {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(36,99,168,.25);
+      border-radius: 14px;
+      background: #eef6ff;
+    }
+
+    .selected-person.visible {
+      display: flex;
+    }
+
+    .selected-person small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .selected-person strong {
+      display: block;
+      color: var(--navy);
+    }
+
+    .change-person-button {
+      flex: 0 0 auto;
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid rgba(36,99,168,.25);
+      border-radius: 11px;
+      color: var(--blue);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    @media (max-width: 760px) {
+      .candidate-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .empty-state {
       padding: 48px 20px;
       border: 1px dashed #cbd6e4;
@@ -575,10 +742,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Χαρτοφυλάκιο">
   <meta name="format-detection" content="telephone=no">
-  <link rel="manifest" href="./manifest.webmanifest?v=5">
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=5">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5">
+  <link rel="manifest" href="./manifest.webmanifest?v=11">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=11">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=11">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=11">
 
 </head>
 <body>
@@ -591,7 +758,7 @@
           <p>Έλεγχος ασφαλιστικών συμβολαίων</p>
         </div>
       </div>
-      <div class="data-pill">Έκδοση 5 · Ακριβής αναζήτηση</div>
+      <div class="data-pill">Έκδοση 11 · Διόρθωση ανοίγματος</div>
     </header>
 
 
@@ -610,7 +777,7 @@
         <p class="eyebrow">Κεντρικό μενού</p>
         <h2 id="homeTitle">Επίλεξε χαρτοφυλάκιο</h2>
         <p class="hero-copy">
-          Αναζήτησε γρήγορα τα συμβόλαια ενός πελάτη και δες τα συνολικά καθαρά ασφάλιστρα.
+          Αναζήτησε γρήγορα τα συμβόλαια ενός πελάτη και δες τα συνολικά μεικτά ασφάλιστρα.
         </p>
       </div>
 
@@ -618,7 +785,7 @@
         <button class="portfolio-card life" type="button" data-target="lifeView">
           <div class="card-icon" aria-hidden="true">♥</div>
           <strong>Ζωής</strong>
-          <span>Αναζήτηση σε ασφαλισμένο και συμβαλλόμενο</span>
+          <span>Αναζήτηση και ομαδοποίηση βάσει συμβαλλομένου</span>
         </button>
 
         <button class="portfolio-card" type="button" data-target="autoView">
@@ -640,13 +807,13 @@
         <div class="section-title">
           <p class="eyebrow">Χαρτοφυλάκιο Ζωής</p>
           <h2 id="lifeTitle">Αναζήτηση πελάτη</h2>
-          <p>Γράψε το επώνυμο ή ολόκληρο το ονοματεπώνυμο του ασφαλισμένου ή του συμβαλλομένου.</p>
+          <p>Γράψε το επώνυμο ή ολόκληρο το ονοματεπώνυμο του συμβαλλομένου.</p>
         </div>
         <button class="back-button" type="button" data-home>← Αρχική</button>
       </div>
 
       <div class="search-panel">
-        <label class="search-label" for="surnameSearch">Επώνυμο ή ονοματεπώνυμο</label>
+        <label class="search-label" for="surnameSearch">Επώνυμο ή ονοματεπώνυμο συμβαλλομένου</label>
         <div class="search-wrap">
           <span class="search-icon" aria-hidden="true">⌕</span>
           <input
@@ -656,11 +823,19 @@
             autocomplete="off"
             autocapitalize="characters"
             spellcheck="false"
-            placeholder="π.χ. Τσέρτος ή Τσέρτος Γεώργιος"
+            placeholder="π.χ. Τσερ, Γεωρ, Α2Ζ ή επωνυμία εταιρείας"
           >
           <button id="clearSearch" class="clear-button" type="button" aria-label="Καθαρισμός αναζήτησης">✕</button>
         </div>
-        <p class="search-hint">Ακριβής αναζήτηση ολόκληρων λέξεων: επώνυμο ή επώνυμο και όνομα. Αγνοούνται μόνο τόνοι και πεζά/κεφαλαία.</p>
+        <p class="search-hint">Ξεκίνα να γράφεις όνομα, επώνυμο ή επωνυμία. Παρόμοιες εταιρικές καταχωρίσεις ενοποιούνται αυτόματα σε έναν πελάτη.</p>
+        <p class="search-hint"><strong>Ποσά:</strong> μεικτά ασφάλιστρα = καθαρά ασφάλιστρα × 1,17.</p>
+        <div id="selectedPerson" class="selected-person">
+          <div>
+            <small>Επιλεγμένος συμβαλλόμενος</small>
+            <strong id="selectedPersonName"></strong>
+          </div>
+          <button id="changePerson" class="change-person-button" type="button">Αλλαγή</button>
+        </div>
       </div>
 
       <div id="resultArea" class="result-area" aria-live="polite">
@@ -672,7 +847,7 @@
 
       <div id="summaryCard" class="summary-card" aria-live="polite">
         <div>
-          <span>Σύνολο ετήσιων καθαρών ασφαλίστρων</span>
+          <span>Σύνολο ετήσιων μεικτών ασφαλίστρων</span>
           <strong id="premiumTotal">0,00 €</strong>
         </div>
         <div class="summary-policies">
@@ -723,6 +898,11 @@
     const summaryCard = document.getElementById("summaryCard");
     const premiumTotal = document.getElementById("premiumTotal");
     const policyTotal = document.getElementById("policyTotal");
+    const selectedPersonBox = document.getElementById("selectedPerson");
+    const selectedPersonName = document.getElementById("selectedPersonName");
+    const changePersonButton = document.getElementById("changePerson");
+
+    let selectedPersonKey = null;
 
     const euro = new Intl.NumberFormat("el-GR", {
       style: "currency",
@@ -730,6 +910,13 @@
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
+
+    const GROSS_PREMIUM_FACTOR = 1.17;
+
+    function grossPremium(netPremium) {
+      const net = Number(netPremium) || 0;
+      return Math.round((net * GROSS_PREMIUM_FACTOR + Number.EPSILON) * 100) / 100;
+    }
 
     function normalizeGreek(value) {
       return String(value ?? "")
@@ -739,6 +926,167 @@
         .replace(/[^Α-ΩA-Z0-9]+/g, " ")
         .trim()
         .replace(/\s+/g, " ");
+    }
+
+    function surnameFamilyVariants(value) {
+      const surname = normalizeGreek(value).split(" ")[0] || "";
+      const variants = new Set([surname]);
+
+      if (surname.length < 3) return variants;
+
+      if (surname.endsWith("ΟΣ")) variants.add(surname.slice(0, -2) + "ΟΥ");
+      if (surname.endsWith("ΟΥ")) variants.add(surname.slice(0, -2) + "ΟΣ");
+      if (surname.endsWith("ΗΣ")) variants.add(surname.slice(0, -1));
+      if (surname.endsWith("Η")) variants.add(surname + "Σ");
+      if (surname.endsWith("ΑΣ")) variants.add(surname.slice(0, -1));
+      if (surname.endsWith("Α")) variants.add(surname + "Σ");
+
+      return variants;
+    }
+
+    function surnamesBelongToSameFamily(nameSurname, querySurname) {
+      const nameVariants = surnameFamilyVariants(nameSurname);
+      const queryVariants = surnameFamilyVariants(querySurname);
+
+      for (const variant of nameVariants) {
+        if (queryVariants.has(variant)) return true;
+      }
+      return false;
+    }
+
+    function personKey(name) {
+      return normalizeGreek(name);
+    }
+
+    const POLICYHOLDERS = [{"id":"customer-001","name":"GΕΝD DΕVΕLΟΡΜΕΝΤ ΜΟΝΟΠΡΟΣΩΠ","keys":["GΕΝD DΕVΕLΟΡΜΕΝΤ ΜΟΝΟΠΡΟΣΩΠ"],"aliases":["GΕΝD DΕVΕLΟΡΜΕΝΤ ΜΟΝΟΠΡΟΣΩΠ"],"normalizedAliases":["GΕΝD DΕVΕLΟΡΜΕΝΤ ΜΟΝΟΠΡΟΣΩΠ"],"searchTokens":["DΕVΕLΟΡΜΕΝΤ","GΕΝD","ΜΟΝΟΠΡΟΣΩΠ"],"policyCount":2,"aliasCount":1},{"id":"customer-002","name":"Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚΗΣ","keys":["Α 2 Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡ ΟΦΟΡΙΚΗΣ","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ Α Ε","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ ΟΡΙΚΗΣ","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ"],"aliases":["Α 2 Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡ ΟΦΟΡΙΚΗΣ","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ.Α.Ε","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ ΟΡΙΚΗΣ","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ"],"normalizedAliases":["Α 2 Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡ ΟΦΟΡΙΚΗΣ","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ Α Ε","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦ ΟΡΙΚΗΣ","Α2Ζ ΣΥΣΤΗΜΑΤΑ ΠΛΗΡΟΦΟΡΙΚ"],"searchTokens":["Α2Ζ","ΑΕ","ΟΡΙΚΗΣ","ΟΦΟΡΙΚΗΣ","ΠΛΗΡ","ΠΛΗΡΟΦ","ΠΛΗΡΟΦΟΡΙΚ","ΠΛΗΡΟΦΟΡΙΚΗΣ","ΣΥΣΤΗΜΑΤΑ"],"policyCount":10,"aliasCount":4},{"id":"customer-003","name":"ΑΜΠΑΤΑΓΓΕΛΟΣ ΠΛΟΥΤΑΡΧΟΣ","keys":["ΑΜΠΑΤΑΓΓΕΛΟΣ ΠΛΟΥΤΑΡΧΟΣ"],"aliases":["ΑΜΠΑΤΑΓΓΕΛΟΣ ΠΛΟΥΤΑΡΧΟΣ"],"normalizedAliases":["ΑΜΠΑΤΑΓΓΕΛΟΣ ΠΛΟΥΤΑΡΧΟΣ"],"searchTokens":["ΑΜΠΑΤΑΓΓΕΛΟΣ","ΠΛΟΥΤΑΡΧΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-004","name":"ΑΜΠΑΤΑΓΓΕΛΟΥ ΕΙΡΗΝΗ","keys":["ΑΜΠΑΤΑΓΓΕΛΟΥ ΕΙΡΗΝΗ"],"aliases":["ΑΜΠΑΤΑΓΓΕΛΟΥ ΕΙΡΗΝΗ"],"normalizedAliases":["ΑΜΠΑΤΑΓΓΕΛΟΥ ΕΙΡΗΝΗ"],"searchTokens":["ΑΜΠΑΤΑΓΓΕΛΟΥ","ΕΙΡΗΝΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-005","name":"ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ","keys":["ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ"],"aliases":["ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ"],"normalizedAliases":["ΑΝΑΠΟΛΙΤΑΚΗΣ ΣΤΥΛΙΑΝΟΣ"],"searchTokens":["ΑΝΑΠΟΛΙΤΑΚΗΣ","ΣΤΥΛΙΑΝΟΣ"],"policyCount":6,"aliasCount":1},{"id":"customer-006","name":"ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ","keys":["ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ"],"aliases":["ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ"],"normalizedAliases":["ΑΝΥΦΑΝΤΗ ΜΑΡΙΑ"],"searchTokens":["ΑΝΥΦΑΝΤΗ","ΜΑΡΙΑ"],"policyCount":2,"aliasCount":1},{"id":"customer-007","name":"ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ","keys":["ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ"],"aliases":["ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ"],"normalizedAliases":["ΑΠΟΣΤΟΛΟΥ ΜΑΡΙΑ"],"searchTokens":["ΑΠΟΣΤΟΛΟΥ","ΜΑΡΙΑ"],"policyCount":2,"aliasCount":1},{"id":"customer-008","name":"ΑΦΟΙ ΛΕΜΟΝΟΠΟΥΛΟΥ ΕΠΕ","keys":["ΑΦΟΙ ΛΕΜΟΝΟΠΟΥΛΟΥ ΕΠΕ"],"aliases":["ΑΦΟΙ ΛΕΜΟΝΟΠΟΥΛΟΥ ΕΠΕ"],"normalizedAliases":["ΑΦΟΙ ΛΕΜΟΝΟΠΟΥΛΟΥ ΕΠΕ"],"searchTokens":["ΑΦΟΙ","ΕΠΕ","ΛΕΜΟΝΟΠΟΥΛΟΥ"],"policyCount":1,"aliasCount":1},{"id":"customer-009","name":"ΒΑΣΙΛΑΚΟΥ ΧΡΙΣΤΙΝΑ","keys":["ΒΑΣΙΛΑΚΟΥ ΧΡΙΣΤΙΝΑ"],"aliases":["ΒΑΣΙΛΑΚΟΥ ΧΡΙΣΤΙΝΑ"],"normalizedAliases":["ΒΑΣΙΛΑΚΟΥ ΧΡΙΣΤΙΝΑ"],"searchTokens":["ΒΑΣΙΛΑΚΟΥ","ΧΡΙΣΤΙΝΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-010","name":"ΒΛΑΣΙ ΧΡΗΣΤΟΣ","keys":["ΒΛΑΣΙ ΧΡΗΣΤΟΣ"],"aliases":["ΒΛΑΣΙ ΧΡΗΣΤΟΣ"],"normalizedAliases":["ΒΛΑΣΙ ΧΡΗΣΤΟΣ"],"searchTokens":["ΒΛΑΣΙ","ΧΡΗΣΤΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-011","name":"ΒΟΥΓΙΟΥΚΛΑΚΗΣ ΓΕΩΡΓΙΟΣ","keys":["ΒΟΥΓΙΟΥΚΛΑΚΗΣ ΓΕΩΡΓΙΟΣ"],"aliases":["ΒΟΥΓΙΟΥΚΛΑΚΗΣ ΓΕΩΡΓΙΟΣ"],"normalizedAliases":["ΒΟΥΓΙΟΥΚΛΑΚΗΣ ΓΕΩΡΓΙΟΣ"],"searchTokens":["ΒΟΥΓΙΟΥΚΛΑΚΗΣ","ΓΕΩΡΓΙΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-012","name":"Γ-Θ ΜΑΣΤΡΟΓΙΑΝΝΗΣ Ο.Ε.","keys":["Γ Θ ΜΑΣΤΡΟΓΙΑΝΝΗΣ Ο Ε"],"aliases":["Γ-Θ ΜΑΣΤΡΟΓΙΑΝΝΗΣ Ο.Ε."],"normalizedAliases":["Γ Θ ΜΑΣΤΡΟΓΙΑΝΝΗΣ Ο Ε"],"searchTokens":["ΓΘ","ΜΑΣΤΡΟΓΙΑΝΝΗΣ","ΟΕ"],"policyCount":1,"aliasCount":1},{"id":"customer-013","name":"ΓΑΒΡΑ ΜΑΡΙΝΑ","keys":["ΓΑΒΡΑ ΜΑΡΙΝΑ"],"aliases":["ΓΑΒΡΑ ΜΑΡΙΝΑ"],"normalizedAliases":["ΓΑΒΡΑ ΜΑΡΙΝΑ"],"searchTokens":["ΓΑΒΡΑ","ΜΑΡΙΝΑ"],"policyCount":2,"aliasCount":1},{"id":"customer-014","name":"ΓΕΩΡΓΑΛΗΣ ΣΤΕΦΑΝΟΣ","keys":["ΓΕΩΡΓΑΛΗΣ ΣΤΕΦΑΝΟΣ"],"aliases":["ΓΕΩΡΓΑΛΗΣ ΣΤΕΦΑΝΟΣ"],"normalizedAliases":["ΓΕΩΡΓΑΛΗΣ ΣΤΕΦΑΝΟΣ"],"searchTokens":["ΓΕΩΡΓΑΛΗΣ","ΣΤΕΦΑΝΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-015","name":"ΓΙΑΝΝΑΚΑΣ ΙΩΑΝΝΗΣ","keys":["ΓΙΑΝΝΑΚΑΣ ΙΩΑΝΝΗΣ"],"aliases":["ΓΙΑΝΝΑΚΑΣ ΙΩΑΝΝΗΣ"],"normalizedAliases":["ΓΙΑΝΝΑΚΑΣ ΙΩΑΝΝΗΣ"],"searchTokens":["ΓΙΑΝΝΑΚΑΣ","ΙΩΑΝΝΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-016","name":"ΓΙΑΝΝΙΚΑΣ ΠΑΝΑΓΙΩΤΗΣ","keys":["ΓΙΑΝΝΙΚΑΣ ΠΑΝΑΓΙΩΤΗΣ"],"aliases":["ΓΙΑΝΝΙΚΑΣ ΠΑΝΑΓΙΩΤΗΣ"],"normalizedAliases":["ΓΙΑΝΝΙΚΑΣ ΠΑΝΑΓΙΩΤΗΣ"],"searchTokens":["ΓΙΑΝΝΙΚΑΣ","ΠΑΝΑΓΙΩΤΗΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-017","name":"ΓΙΑΝΝΟΠΟΥΛΟΣ ΗΛΙΑΣ","keys":["ΓΙΑΝΝΟΠΟΥΛΟΣ ΗΛΙΑΣ"],"aliases":["ΓΙΑΝΝΟΠΟΥΛΟΣ ΗΛΙΑΣ"],"normalizedAliases":["ΓΙΑΝΝΟΠΟΥΛΟΣ ΗΛΙΑΣ"],"searchTokens":["ΓΙΑΝΝΟΠΟΥΛΟΣ","ΗΛΙΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-018","name":"ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ","keys":["ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ"],"aliases":["ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ"],"normalizedAliases":["ΓΚΩΣΕ ΑΙΚΑΤΕΡΙΝΗ"],"searchTokens":["ΑΙΚΑΤΕΡΙΝΗ","ΓΚΩΣΕ"],"policyCount":2,"aliasCount":1},{"id":"customer-019","name":"ΓΡΑΨΑ ΦΩΤΕΙΝΗ","keys":["ΓΡΑΨΑ ΦΩΤΕΙΝΗ"],"aliases":["ΓΡΑΨΑ ΦΩΤΕΙΝΗ"],"normalizedAliases":["ΓΡΑΨΑ ΦΩΤΕΙΝΗ"],"searchTokens":["ΓΡΑΨΑ","ΦΩΤΕΙΝΗ"],"policyCount":4,"aliasCount":1},{"id":"customer-020","name":"ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ","keys":["ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ"],"aliases":["ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ"],"normalizedAliases":["ΓΡΗΓΟΡΙΟΥ ΑΡΙΣΤΕΙΔΗΣ"],"searchTokens":["ΑΡΙΣΤΕΙΔΗΣ","ΓΡΗΓΟΡΙΟΥ"],"policyCount":2,"aliasCount":1},{"id":"customer-021","name":"ΔΑΜΙΓΟΥ ΤΕΡΨΙΧΟΡΗ","keys":["ΔΑΜΙΓΟΥ ΤΕΡΨΙΧΟΡΗ"],"aliases":["ΔΑΜΙΓΟΥ ΤΕΡΨΙΧΟΡΗ"],"normalizedAliases":["ΔΑΜΙΓΟΥ ΤΕΡΨΙΧΟΡΗ"],"searchTokens":["ΔΑΜΙΓΟΥ","ΤΕΡΨΙΧΟΡΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-022","name":"ΔΕΛΗΣΤΡΑΤΗ ΜΑΡΙΝΕΛΑ Ρ","keys":["ΔΕΛΗΣΤΡΑΤΗ ΜΑΡΙΝΕΛΑ Ρ"],"aliases":["ΔΕΛΗΣΤΡΑΤΗ ΜΑΡΙΝΕΛΑ Ρ"],"normalizedAliases":["ΔΕΛΗΣΤΡΑΤΗ ΜΑΡΙΝΕΛΑ Ρ"],"searchTokens":["ΔΕΛΗΣΤΡΑΤΗ","ΜΑΡΙΝΕΛΑ","Ρ"],"policyCount":1,"aliasCount":1},{"id":"customer-023","name":"ΔΕΛΗΣΤΡΑΤΗΣ ΓΑΒΡΙΗΛ","keys":["ΔΕΛΗΣΤΡΑΤΗΣ ΓΑΒΡΙΗΛ"],"aliases":["ΔΕΛΗΣΤΡΑΤΗΣ ΓΑΒΡΙΗΛ"],"normalizedAliases":["ΔΕΛΗΣΤΡΑΤΗΣ ΓΑΒΡΙΗΛ"],"searchTokens":["ΓΑΒΡΙΗΛ","ΔΕΛΗΣΤΡΑΤΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-024","name":"ΔΕΛΤΣΙΔΗΣ ΠΑΝΑΓΙΩΤΗΣ","keys":["ΔΕΛΤΣΙΔΗΣ ΠΑΝΑΓΙΩΤΗΣ"],"aliases":["ΔΕΛΤΣΙΔΗΣ ΠΑΝΑΓΙΩΤΗΣ"],"normalizedAliases":["ΔΕΛΤΣΙΔΗΣ ΠΑΝΑΓΙΩΤΗΣ"],"searchTokens":["ΔΕΛΤΣΙΔΗΣ","ΠΑΝΑΓΙΩΤΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-025","name":"ΔΕΣΠΟΤΟΠΟΥΛΟΣ ΚΩΝ/ΝΟΣ","keys":["ΔΕΣΠΟΤΟΠΟΥΛΟΣ ΚΩΝ ΝΟΣ"],"aliases":["ΔΕΣΠΟΤΟΠΟΥΛΟΣ ΚΩΝ/ΝΟΣ"],"normalizedAliases":["ΔΕΣΠΟΤΟΠΟΥΛΟΣ ΚΩΝ ΝΟΣ"],"searchTokens":["ΔΕΣΠΟΤΟΠΟΥΛΟΣ","ΚΩΝ","ΝΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-026","name":"ΔΕΣΠΟΤΟΠΟΥΛΟΥ ΣΤΑΥΡΟΥΛΑ","keys":["ΔΕΣΠΟΤΟΠΟΥΛΟΥ ΣΤΑΥΡΟΥΛΑ"],"aliases":["ΔΕΣΠΟΤΟΠΟΥΛΟΥ ΣΤΑΥΡΟΥΛΑ"],"normalizedAliases":["ΔΕΣΠΟΤΟΠΟΥΛΟΥ ΣΤΑΥΡΟΥΛΑ"],"searchTokens":["ΔΕΣΠΟΤΟΠΟΥΛΟΥ","ΣΤΑΥΡΟΥΛΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-027","name":"ΔΟΜΑΖΟΣ ΙΩΑΝΝΗΣ","keys":["ΔΟΜΑΖΟΣ ΙΩΑΝΝΗΣ"],"aliases":["ΔΟΜΑΖΟΣ ΙΩΑΝΝΗΣ"],"normalizedAliases":["ΔΟΜΑΖΟΣ ΙΩΑΝΝΗΣ"],"searchTokens":["ΔΟΜΑΖΟΣ","ΙΩΑΝΝΗΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-028","name":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ","keys":["ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ"],"aliases":["ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ"],"normalizedAliases":["ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΕΙΟΣ"],"searchTokens":["ΒΑΣΙΛΕΙΟΣ","ΖΑΦΕΙΡΟΠΟΥΛΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-029","name":"ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΗΣ","keys":["ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΗΣ"],"aliases":["ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΗΣ"],"normalizedAliases":["ΖΑΦΕΙΡΟΠΟΥΛΟΣ ΒΑΣΙΛΗΣ"],"searchTokens":["ΒΑΣΙΛΗΣ","ΖΑΦΕΙΡΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-030","name":"ΗΛΙΑΔΗΣ ΦΙΛΙΠΠΟΣ","keys":["ΗΛΙΑΔΗΣ ΦΙΛΙΠΠΟΣ"],"aliases":["ΗΛΙΑΔΗΣ ΦΙΛΙΠΠΟΣ"],"normalizedAliases":["ΗΛΙΑΔΗΣ ΦΙΛΙΠΠΟΣ"],"searchTokens":["ΗΛΙΑΔΗΣ","ΦΙΛΙΠΠΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-031","name":"ΗΟΧΗΑ ΧΗΕVΑJΕΤ","keys":["ΗΟΧΗΑ ΧΗΕVΑJΕΤ"],"aliases":["ΗΟΧΗΑ ΧΗΕVΑJΕΤ"],"normalizedAliases":["ΗΟΧΗΑ ΧΗΕVΑJΕΤ"],"searchTokens":["ΗΟΧΗΑ","ΧΗΕVΑJΕΤ"],"policyCount":1,"aliasCount":1},{"id":"customer-032","name":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΗΣ","keys":["ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΗΣ"],"aliases":["ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΗΣ"],"normalizedAliases":["ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΗΣ"],"searchTokens":["ΔΗΜΗΤΡΗΣ","ΗΡΑΚΛΕΟΥΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-033","name":"ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ","keys":["ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ"],"aliases":["ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ"],"normalizedAliases":["ΗΡΑΚΛΕΟΥΣ ΔΗΜΗΤΡΙΟΣ"],"searchTokens":["ΔΗΜΗΤΡΙΟΣ","ΗΡΑΚΛΕΟΥΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-034","name":"Ι.ΤΣΑΚΑΝΙΚΑ Α.Ε. ΟΙΝΟΠΟΙΙΑ","keys":["Ι ΤΣΑΚΑΝΙΚΑ Α Ε ΟΙΝΟΠΟΙΙΑ"],"aliases":["Ι.ΤΣΑΚΑΝΙΚΑ Α.Ε. ΟΙΝΟΠΟΙΙΑ"],"normalizedAliases":["Ι ΤΣΑΚΑΝΙΚΑ Α Ε ΟΙΝΟΠΟΙΙΑ"],"searchTokens":["ΑΕ","Ι","ΟΙΝΟΠΟΙΙΑ","ΤΣΑΚΑΝΙΚΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-035","name":"ΙΝΒ ΤΕΧΝΙΚΗ ΕΕ","keys":["ΙΝΒ ΤΕΧΝΙΚΗ","ΙΝΒ ΤΕΧΝΙΚΗ ΕΕ"],"aliases":["ΙΝΒ ΤΕΧΝΙΚΗ","ΙΝΒ ΤΕΧΝΙΚΗ ΕΕ"],"normalizedAliases":["ΙΝΒ ΤΕΧΝΙΚΗ","ΙΝΒ ΤΕΧΝΙΚΗ ΕΕ"],"searchTokens":["ΕΕ","ΙΝΒ","ΤΕΧΝΙΚΗ"],"policyCount":2,"aliasCount":2},{"id":"customer-036","name":"ΙΝΤΖΙΡΤΖΗΣ ΑΝΔΡΕΑΣ","keys":["ΙΝΤΖΙΡΤΖΗΣ ΑΝΔΡΕΑΣ"],"aliases":["ΙΝΤΖΙΡΤΖΗΣ ΑΝΔΡΕΑΣ"],"normalizedAliases":["ΙΝΤΖΙΡΤΖΗΣ ΑΝΔΡΕΑΣ"],"searchTokens":["ΑΝΔΡΕΑΣ","ΙΝΤΖΙΡΤΖΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-037","name":"ΚΑΙΛΑΣ ΕΜΜΑΝΟΥΗΛ","keys":["ΚΑΙΛΑΣ ΕΜΜΑΝΟΥΗΛ"],"aliases":["ΚΑΙΛΑΣ ΕΜΜΑΝΟΥΗΛ"],"normalizedAliases":["ΚΑΙΛΑΣ ΕΜΜΑΝΟΥΗΛ"],"searchTokens":["ΕΜΜΑΝΟΥΗΛ","ΚΑΙΛΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-038","name":"ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ","keys":["ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ"],"aliases":["ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ"],"normalizedAliases":["ΚΑΠΙΖΙΩΝΗ ΠΟΛΥΞΕΝΗ"],"searchTokens":["ΚΑΠΙΖΙΩΝΗ","ΠΟΛΥΞΕΝΗ"],"policyCount":2,"aliasCount":1},{"id":"customer-039","name":"ΚΑΠΟΠΟΥΛΟΣ ΔΙΟΝΥΣΙΟΣ","keys":["ΚΑΠΟΠΟΥΛΟΣ ΔΙΟΝΥΣΙΟΣ"],"aliases":["ΚΑΠΟΠΟΥΛΟΣ ΔΙΟΝΥΣΙΟΣ"],"normalizedAliases":["ΚΑΠΟΠΟΥΛΟΣ ΔΙΟΝΥΣΙΟΣ"],"searchTokens":["ΔΙΟΝΥΣΙΟΣ","ΚΑΠΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-040","name":"ΚΑΡΑΜΑΝΩΛΑΚΗΣ ΑΝΤΩΝΗΣ","keys":["ΚΑΡΑΜΑΝΩΛΑΚΗΣ ΑΝΤΩΝΗΣ"],"aliases":["ΚΑΡΑΜΑΝΩΛΑΚΗΣ ΑΝΤΩΝΗΣ"],"normalizedAliases":["ΚΑΡΑΜΑΝΩΛΑΚΗΣ ΑΝΤΩΝΗΣ"],"searchTokens":["ΑΝΤΩΝΗΣ","ΚΑΡΑΜΑΝΩΛΑΚΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-041","name":"ΚΑΡΑΝΙΚΟΛΑΣ ΣΠΥΡΙΔΩΝ","keys":["ΚΑΡΑΝΙΚΟΛΑΣ ΣΠΥΡΙΔΩΝ"],"aliases":["ΚΑΡΑΝΙΚΟΛΑΣ ΣΠΥΡΙΔΩΝ"],"normalizedAliases":["ΚΑΡΑΝΙΚΟΛΑΣ ΣΠΥΡΙΔΩΝ"],"searchTokens":["ΚΑΡΑΝΙΚΟΛΑΣ","ΣΠΥΡΙΔΩΝ"],"policyCount":1,"aliasCount":1},{"id":"customer-042","name":"ΚΑΡΑΤΑΡΑΚΗΣ ΙΩΣΗΦ","keys":["ΚΑΡΑΤΑΡΑΚΗΣ ΙΩΣΗΦ"],"aliases":["ΚΑΡΑΤΑΡΑΚΗΣ ΙΩΣΗΦ"],"normalizedAliases":["ΚΑΡΑΤΑΡΑΚΗΣ ΙΩΣΗΦ"],"searchTokens":["ΙΩΣΗΦ","ΚΑΡΑΤΑΡΑΚΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-043","name":"ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ","keys":["ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ"],"aliases":["ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ"],"normalizedAliases":["ΚΑΣΣΑΡΑΣ ΙΩΑΝΝΗΣ"],"searchTokens":["ΙΩΑΝΝΗΣ","ΚΑΣΣΑΡΑΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-044","name":"ΚΑΤΣΙΑΠΗ ΒΑΣΙΛΙΚΗ","keys":["ΚΑΤΣΙΑΠΗ ΒΑΣΙΛΙΚΗ"],"aliases":["ΚΑΤΣΙΑΠΗ ΒΑΣΙΛΙΚΗ"],"normalizedAliases":["ΚΑΤΣΙΑΠΗ ΒΑΣΙΛΙΚΗ"],"searchTokens":["ΒΑΣΙΛΙΚΗ","ΚΑΤΣΙΑΠΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-045","name":"ΚΑΤΣΟΥΛΗΣ ΑΓΓΕΛΟΣ","keys":["ΚΑΤΣΟΥΛΗΣ ΑΓΓΕΛΟΣ"],"aliases":["ΚΑΤΣΟΥΛΗΣ ΑΓΓΕΛΟΣ"],"normalizedAliases":["ΚΑΤΣΟΥΛΗΣ ΑΓΓΕΛΟΣ"],"searchTokens":["ΑΓΓΕΛΟΣ","ΚΑΤΣΟΥΛΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-046","name":"ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ","keys":["ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ"],"aliases":["ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ"],"normalizedAliases":["ΚΙΟΥΣΗ ΠΑΝΑΓΙΩΤΑ"],"searchTokens":["ΚΙΟΥΣΗ","ΠΑΝΑΓΙΩΤΑ"],"policyCount":2,"aliasCount":1},{"id":"customer-047","name":"ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ","keys":["ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ"],"aliases":["ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ"],"normalizedAliases":["ΚΙΟΥΣΗΣ ΠΑΝΑΓΙΩΤΗΣ"],"searchTokens":["ΚΙΟΥΣΗΣ","ΠΑΝΑΓΙΩΤΗΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-048","name":"ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ","keys":["ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ"],"aliases":["ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ"],"normalizedAliases":["ΚΙΤΣΙΚΟΥΔΗ ΜΑΡΙΑ"],"searchTokens":["ΚΙΤΣΙΚΟΥΔΗ","ΜΑΡΙΑ"],"policyCount":3,"aliasCount":1},{"id":"customer-049","name":"ΚΟΡΩΝΑΚΟΣ ΑΓΑΜΕΜΝΩΝ","keys":["ΚΟΡΩΝΑΚΟΣ ΑΓΑΜΕΜΝΩΝ"],"aliases":["ΚΟΡΩΝΑΚΟΣ ΑΓΑΜΕΜΝΩΝ"],"normalizedAliases":["ΚΟΡΩΝΑΚΟΣ ΑΓΑΜΕΜΝΩΝ"],"searchTokens":["ΑΓΑΜΕΜΝΩΝ","ΚΟΡΩΝΑΚΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-050","name":"ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ","keys":["ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ"],"aliases":["ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ"],"normalizedAliases":["ΚΟΤΣΙΡΑΣ ΙΩΑΝΝΗΣ"],"searchTokens":["ΙΩΑΝΝΗΣ","ΚΟΤΣΙΡΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-051","name":"ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ","keys":["ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ"],"aliases":["ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ"],"normalizedAliases":["ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ ΙΩΑΝΝΗΣ"],"searchTokens":["ΙΩΑΝΝΗΣ","ΚΟΥΤΣΑΝΤΩΝΑΚΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-052","name":"ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ","keys":["ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ"],"aliases":["ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ"],"normalizedAliases":["ΚΡΕΤΣΑΣ ΣΤΑΥΡΟΣ"],"searchTokens":["ΚΡΕΤΣΑΣ","ΣΤΑΥΡΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-053","name":"ΚΥΡΙΑΚΟΠΟΥΛΟΣ ΚΥΡΙΑΚΟΣ","keys":["ΚΥΡΙΑΚΟΠΟΥΛΟΣ ΚΥΡΙΑΚΟΣ"],"aliases":["ΚΥΡΙΑΚΟΠΟΥΛΟΣ ΚΥΡΙΑΚΟΣ"],"normalizedAliases":["ΚΥΡΙΑΚΟΠΟΥΛΟΣ ΚΥΡΙΑΚΟΣ"],"searchTokens":["ΚΥΡΙΑΚΟΠΟΥΛΟΣ","ΚΥΡΙΑΚΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-054","name":"ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ","keys":["ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ"],"aliases":["ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ"],"normalizedAliases":["ΚΥΡΜΠΑΤΣΗΣ ΦΩΤΙΟΣ"],"searchTokens":["ΚΥΡΜΠΑΤΣΗΣ","ΦΩΤΙΟΣ"],"policyCount":4,"aliasCount":1},{"id":"customer-055","name":"ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ","keys":["ΚΩΣΤΑΡΕΛΛΟΣ Ε Π Ε","ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ"],"aliases":["ΚΩΣΤΑΡΕΛΛΟΣ Ε.Π.Ε.","ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ"],"normalizedAliases":["ΚΩΣΤΑΡΕΛΛΟΣ Ε Π Ε","ΚΩΣΤΑΡΕΛΛΟΣ ΕΠΕ"],"searchTokens":["ΕΠΕ","ΚΩΣΤΑΡΕΛΛΟΣ"],"policyCount":4,"aliasCount":2},{"id":"customer-056","name":"ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ","keys":["ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ"],"aliases":["ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ"],"normalizedAliases":["ΚΩΣΤΑΡΕΛΛΟΣ ΧΡΗΣΤΟΣ"],"searchTokens":["ΚΩΣΤΑΡΕΛΛΟΣ","ΧΡΗΣΤΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-057","name":"ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ","keys":["ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ"],"aliases":["ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ"],"normalizedAliases":["ΛΑΣΚΑΡΙΔΟΥ ΑΝΑΣΤΑΣΙΑ"],"searchTokens":["ΑΝΑΣΤΑΣΙΑ","ΛΑΣΚΑΡΙΔΟΥ"],"policyCount":2,"aliasCount":1},{"id":"customer-058","name":"ΛΙΑΜΗΣ ΘΕΟΔΩΡΟΣ","keys":["ΛΙΑΜΗΣ ΘΕΟΔΩΡΟΣ"],"aliases":["ΛΙΑΜΗΣ ΘΕΟΔΩΡΟΣ"],"normalizedAliases":["ΛΙΑΜΗΣ ΘΕΟΔΩΡΟΣ"],"searchTokens":["ΘΕΟΔΩΡΟΣ","ΛΙΑΜΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-059","name":"ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ","keys":["ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ"],"aliases":["ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ"],"normalizedAliases":["ΛΙΑΝΟΣ ΧΑΡΙΛΑΟΣ"],"searchTokens":["ΛΙΑΝΟΣ","ΧΑΡΙΛΑΟΣ"],"policyCount":9,"aliasCount":1},{"id":"customer-060","name":"ΛΙΤΣΙΟΥ ΛΑΟΥΡΑ","keys":["ΛΙΤΣΙΟΥ ΛΑΟΥΡΑ"],"aliases":["ΛΙΤΣΙΟΥ ΛΑΟΥΡΑ"],"normalizedAliases":["ΛΙΤΣΙΟΥ ΛΑΟΥΡΑ"],"searchTokens":["ΛΑΟΥΡΑ","ΛΙΤΣΙΟΥ"],"policyCount":1,"aliasCount":1},{"id":"customer-061","name":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ","keys":["ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ"],"aliases":["ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ"],"normalizedAliases":["ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ"],"searchTokens":["ΛΥΚΟΠΟΥΛΟΣ","ΝΙΚΟΛΑΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-062","name":"ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","keys":["ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ"],"aliases":["ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ"],"normalizedAliases":["ΛΥΚΟΠΟΥΛΟΣ ΝΙΚΟΣ"],"searchTokens":["ΛΥΚΟΠΟΥΛΟΣ","ΝΙΚΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-063","name":"ΜΑGΙCΑ FΟURΚΑ","keys":["ΜΑGΙCΑ FΟURΚΑ","ΜΑGΙΚΑ FΟURΚΑ"],"aliases":["ΜΑGΙCΑ FΟURΚΑ","ΜΑGΙΚΑ FΟURΚΑ"],"normalizedAliases":["ΜΑGΙCΑ FΟURΚΑ","ΜΑGΙΚΑ FΟURΚΑ"],"searchTokens":["FΟURΚΑ","ΜΑGΙCΑ","ΜΑGΙΚΑ"],"policyCount":2,"aliasCount":2},{"id":"customer-064","name":"ΜΑGΙCΑ FΟURΚΑ SΕRVΙC FΑCΙLΙΤΥ Μ","keys":["ΜΑGΙCΑ FΟURΚΑ SΕRVΙ FΑCΙLΙΤΥ Μ","ΜΑGΙCΑ FΟURΚΑ SΕRVΙC FΑCΙLΙΤΥ Μ"],"aliases":["ΜΑGΙCΑ FΟURΚΑ SΕRVΙ FΑCΙLΙΤΥ Μ","ΜΑGΙCΑ FΟURΚΑ SΕRVΙC FΑCΙLΙΤΥ Μ"],"normalizedAliases":["ΜΑGΙCΑ FΟURΚΑ SΕRVΙ FΑCΙLΙΤΥ Μ","ΜΑGΙCΑ FΟURΚΑ SΕRVΙC FΑCΙLΙΤΥ Μ"],"searchTokens":["FΑCΙLΙΤΥ","FΟURΚΑ","SΕRVΙ","SΕRVΙC","Μ","ΜΑGΙCΑ"],"policyCount":2,"aliasCount":2},{"id":"customer-065","name":"ΜΑΓΚΛΑΡΑ ΣΟΦΙΑ","keys":["ΜΑΓΚΛΑΡΑ ΣΟΦΙΑ"],"aliases":["ΜΑΓΚΛΑΡΑ ΣΟΦΙΑ"],"normalizedAliases":["ΜΑΓΚΛΑΡΑ ΣΟΦΙΑ"],"searchTokens":["ΜΑΓΚΛΑΡΑ","ΣΟΦΙΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-066","name":"ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ","keys":["ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ"],"aliases":["ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ"],"normalizedAliases":["ΜΑΓΚΛΑΡΑΣ ΧΡΗΣΤΟΣ"],"searchTokens":["ΜΑΓΚΛΑΡΑΣ","ΧΡΗΣΤΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-067","name":"ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ","keys":["ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ"],"aliases":["ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ"],"normalizedAliases":["ΜΑΚΡΗ ΑΝΑΣΤΑΣΙΑ"],"searchTokens":["ΑΝΑΣΤΑΣΙΑ","ΜΑΚΡΗ"],"policyCount":2,"aliasCount":1},{"id":"customer-068","name":"ΜΑΚΡΗ ΚΥΡΙΑΚΗ","keys":["ΜΑΚΡΗ ΚΥΡΙΑΚΗ"],"aliases":["ΜΑΚΡΗ ΚΥΡΙΑΚΗ"],"normalizedAliases":["ΜΑΚΡΗ ΚΥΡΙΑΚΗ"],"searchTokens":["ΚΥΡΙΑΚΗ","ΜΑΚΡΗ"],"policyCount":3,"aliasCount":1},{"id":"customer-069","name":"ΜΑΝΕΤΑ ΔΙΟΝΥΣΙΑ","keys":["ΜΑΝΕΤΑ ΔΙΟΝΥΣΙΑ"],"aliases":["ΜΑΝΕΤΑ ΔΙΟΝΥΣΙΑ"],"normalizedAliases":["ΜΑΝΕΤΑ ΔΙΟΝΥΣΙΑ"],"searchTokens":["ΔΙΟΝΥΣΙΑ","ΜΑΝΕΤΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-070","name":"ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ","keys":["ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ"],"aliases":["ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ"],"normalizedAliases":["ΜΑΥΡΑΚΗ ΑΜΑΛΙΑ"],"searchTokens":["ΑΜΑΛΙΑ","ΜΑΥΡΑΚΗ"],"policyCount":2,"aliasCount":1},{"id":"customer-071","name":"ΜΕΤΣΙΟΥ ΑΝΑΣΤΑΣΙΑ","keys":["ΜΕΤΣΙΟΥ ΑΝΑΣΤΑΣΙΑ"],"aliases":["ΜΕΤΣΙΟΥ ΑΝΑΣΤΑΣΙΑ"],"normalizedAliases":["ΜΕΤΣΙΟΥ ΑΝΑΣΤΑΣΙΑ"],"searchTokens":["ΑΝΑΣΤΑΣΙΑ","ΜΕΤΣΙΟΥ"],"policyCount":1,"aliasCount":1},{"id":"customer-072","name":"ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ","keys":["ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ"],"aliases":["ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ"],"normalizedAliases":["ΜΙΧΑΛΟΠΟΥΛΟΣ ΗΛΙΑΣ"],"searchTokens":["ΗΛΙΑΣ","ΜΙΧΑΛΟΠΟΥΛΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-073","name":"ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ","keys":["ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ"],"aliases":["ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ"],"normalizedAliases":["ΜΙΧΑΛΟΠΟΥΛΟΥ ΖΑΦΕΙΡΕΝΙΑ"],"searchTokens":["ΖΑΦΕΙΡΕΝΙΑ","ΜΙΧΑΛΟΠΟΥΛΟΥ"],"policyCount":2,"aliasCount":1},{"id":"customer-074","name":"ΜΟΥΔΑΤΣΟΣ ΚΩΝ/ΝΟΣ","keys":["ΜΟΥΔΑΤΣΟΣ ΚΩΝ ΝΟΣ"],"aliases":["ΜΟΥΔΑΤΣΟΣ ΚΩΝ/ΝΟΣ"],"normalizedAliases":["ΜΟΥΔΑΤΣΟΣ ΚΩΝ ΝΟΣ"],"searchTokens":["ΚΩΝ","ΜΟΥΔΑΤΣΟΣ","ΝΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-075","name":"ΜΟΥΡΤΖΟΥΚΟΣ ΑΛΕΞΑΝΔΡΟΣ","keys":["ΜΟΥΡΤΖΟΥΚΟΣ ΑΛΕΞΑΝΔΡΟΣ"],"aliases":["ΜΟΥΡΤΖΟΥΚΟΣ ΑΛΕΞΑΝΔΡΟΣ"],"normalizedAliases":["ΜΟΥΡΤΖΟΥΚΟΣ ΑΛΕΞΑΝΔΡΟΣ"],"searchTokens":["ΑΛΕΞΑΝΔΡΟΣ","ΜΟΥΡΤΖΟΥΚΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-076","name":"ΜΟΥΣΤΑΚΑ ΣΟΦΙΑ ΙΩΑΝ","keys":["ΜΟΥΣΤΑΚΑ ΣΟΦΙΑ ΙΩΑΝ"],"aliases":["ΜΟΥΣΤΑΚΑ ΣΟΦΙΑ ΙΩΑΝ"],"normalizedAliases":["ΜΟΥΣΤΑΚΑ ΣΟΦΙΑ ΙΩΑΝ"],"searchTokens":["ΙΩΑΝ","ΜΟΥΣΤΑΚΑ","ΣΟΦΙΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-077","name":"ΜΠΛΑΤΣΟΣ ΓΕΩΡΓΙΟΣ","keys":["ΜΠΛΑΤΣΟΣ ΓΕΩΡΓΙΟΣ"],"aliases":["ΜΠΛΑΤΣΟΣ ΓΕΩΡΓΙΟΣ"],"normalizedAliases":["ΜΠΛΑΤΣΟΣ ΓΕΩΡΓΙΟΣ"],"searchTokens":["ΓΕΩΡΓΙΟΣ","ΜΠΛΑΤΣΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-078","name":"ΜΠΟΖΙΟΣ ΦΩΤΙΟΣ","keys":["ΜΠΟΖΙΟΣ ΦΩΤΙΟΣ"],"aliases":["ΜΠΟΖΙΟΣ ΦΩΤΙΟΣ"],"normalizedAliases":["ΜΠΟΖΙΟΣ ΦΩΤΙΟΣ"],"searchTokens":["ΜΠΟΖΙΟΣ","ΦΩΤΙΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-079","name":"ΜΠΡΕΜΠΟΣ ΣΠΥΡΙΔΩΝ","keys":["ΜΠΡΕΜΠΟΣ ΣΠΥΡΙΔΩΝ"],"aliases":["ΜΠΡΕΜΠΟΣ ΣΠΥΡΙΔΩΝ"],"normalizedAliases":["ΜΠΡΕΜΠΟΣ ΣΠΥΡΙΔΩΝ"],"searchTokens":["ΜΠΡΕΜΠΟΣ","ΣΠΥΡΙΔΩΝ"],"policyCount":2,"aliasCount":1},{"id":"customer-080","name":"ΜΥΛΩΝΑΣ ΗΛΙΑΣ","keys":["ΜΥΛΩΝΑΣ ΗΛΙΑΣ"],"aliases":["ΜΥΛΩΝΑΣ ΗΛΙΑΣ"],"normalizedAliases":["ΜΥΛΩΝΑΣ ΗΛΙΑΣ"],"searchTokens":["ΗΛΙΑΣ","ΜΥΛΩΝΑΣ"],"policyCount":4,"aliasCount":1},{"id":"customer-081","name":"ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ","keys":["ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ"],"aliases":["ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ"],"normalizedAliases":["ΞΕΝΑΚΗ ΕΥΑΓΓΕΛΙΑ"],"searchTokens":["ΕΥΑΓΓΕΛΙΑ","ΞΕΝΑΚΗ"],"policyCount":2,"aliasCount":1},{"id":"customer-082","name":"ΟΚΟΝΝΟΡ ΑΛΕΞΑΝΔΡΟΣ","keys":["ΟΚΟΝΝΟΡ ΑΛΕΞΑΝΔΡΟΣ"],"aliases":["ΟΚΟΝΝΟΡ ΑΛΕΞΑΝΔΡΟΣ"],"normalizedAliases":["ΟΚΟΝΝΟΡ ΑΛΕΞΑΝΔΡΟΣ"],"searchTokens":["ΑΛΕΞΑΝΔΡΟΣ","ΟΚΟΝΝΟΡ"],"policyCount":2,"aliasCount":1},{"id":"customer-083","name":"ΠΑΙΚΟΥΛΑΣ ΒΑΣΙΛΕΙΟΣ","keys":["ΠΑΙΚΟΥΛΑΣ ΒΑΣΙΛΕΙΟΣ"],"aliases":["ΠΑΙΚΟΥΛΑΣ ΒΑΣΙΛΕΙΟΣ"],"normalizedAliases":["ΠΑΙΚΟΥΛΑΣ ΒΑΣΙΛΕΙΟΣ"],"searchTokens":["ΒΑΣΙΛΕΙΟΣ","ΠΑΙΚΟΥΛΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-084","name":"ΠΑΙΚΟΥΛΑΣ ΚΩΝ/ΝΟΣ","keys":["ΠΑΙΚΟΥΛΑΣ ΚΩΝ ΝΟΣ"],"aliases":["ΠΑΙΚΟΥΛΑΣ ΚΩΝ/ΝΟΣ"],"normalizedAliases":["ΠΑΙΚΟΥΛΑΣ ΚΩΝ ΝΟΣ"],"searchTokens":["ΚΩΝ","ΝΟΣ","ΠΑΙΚΟΥΛΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-085","name":"ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ ΜΙΧΑΗΛ","keys":["ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ ΜΙΧΑΗΛ"],"aliases":["ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ ΜΙΧΑΗΛ"],"normalizedAliases":["ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ ΜΙΧΑΗΛ"],"searchTokens":["ΜΙΧΑΗΛ","ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-086","name":"ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ ΑΣΗΜΙΝΑ","keys":["ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ ΑΣΗΜΙΝΑ"],"aliases":["ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ ΑΣΗΜΙΝΑ"],"normalizedAliases":["ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ ΑΣΗΜΙΝΑ"],"searchTokens":["ΑΣΗΜΙΝΑ","ΠΑΝΑΓΙΩΤΟΠΟΥΛΟΥ"],"policyCount":1,"aliasCount":1},{"id":"customer-087","name":"ΠΑΠΑΔΑΚΗ ΜΑΡΙΑ","keys":["ΠΑΠΑΔΑΚΗ ΜΑΡΙΑ"],"aliases":["ΠΑΠΑΔΑΚΗ ΜΑΡΙΑ"],"normalizedAliases":["ΠΑΠΑΔΑΚΗ ΜΑΡΙΑ"],"searchTokens":["ΜΑΡΙΑ","ΠΑΠΑΔΑΚΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-088","name":"ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ","keys":["ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ"],"aliases":["ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ"],"normalizedAliases":["ΠΑΠΟΥΤΣΑΚΗΣ ΜΑΝΟΥΣΟΣ"],"searchTokens":["ΜΑΝΟΥΣΟΣ","ΠΑΠΟΥΤΣΑΚΗΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-089","name":"ΠΑΡΙΣΗΣ ΑΓΓΕΛΟΣ","keys":["ΠΑΡΙΣΗΣ ΑΓΓΕΛΟΣ"],"aliases":["ΠΑΡΙΣΗΣ ΑΓΓΕΛΟΣ"],"normalizedAliases":["ΠΑΡΙΣΗΣ ΑΓΓΕΛΟΣ"],"searchTokens":["ΑΓΓΕΛΟΣ","ΠΑΡΙΣΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-090","name":"ΠΑΥΛΟΠΟΥΛΟΣ ΓΕΩΡΓΙΟΣ","keys":["ΠΑΥΛΟΠΟΥΛΟΣ ΓΕΩΡΓΙΟΣ"],"aliases":["ΠΑΥΛΟΠΟΥΛΟΣ ΓΕΩΡΓΙΟΣ"],"normalizedAliases":["ΠΑΥΛΟΠΟΥΛΟΣ ΓΕΩΡΓΙΟΣ"],"searchTokens":["ΓΕΩΡΓΙΟΣ","ΠΑΥΛΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-091","name":"ΠΛΑΚΑΛΗ ΕΛΕΝΗ","keys":["ΠΛΑΚΑΛΗ ΕΛΕΝΗ"],"aliases":["ΠΛΑΚΑΛΗ ΕΛΕΝΗ"],"normalizedAliases":["ΠΛΑΚΑΛΗ ΕΛΕΝΗ"],"searchTokens":["ΕΛΕΝΗ","ΠΛΑΚΑΛΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-092","name":"ΠΥΡΓΙΕΡΗΣ ΑΝΑΣΤΑΣΙΟΣ","keys":["ΠΥΡΓΙΕΡΗΣ ΑΝΑΣΤΑΣΙΟΣ"],"aliases":["ΠΥΡΓΙΕΡΗΣ ΑΝΑΣΤΑΣΙΟΣ"],"normalizedAliases":["ΠΥΡΓΙΕΡΗΣ ΑΝΑΣΤΑΣΙΟΣ"],"searchTokens":["ΑΝΑΣΤΑΣΙΟΣ","ΠΥΡΓΙΕΡΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-093","name":"ΡΑΙΚΟΣ ΘΩΜΑΣ","keys":["ΡΑΙΚΟΣ ΘΩΜΑΣ"],"aliases":["ΡΑΙΚΟΣ ΘΩΜΑΣ"],"normalizedAliases":["ΡΑΙΚΟΣ ΘΩΜΑΣ"],"searchTokens":["ΘΩΜΑΣ","ΡΑΙΚΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-094","name":"ΡΗΝΑΚΗΣ ΠΑΡΑΣΚΕΥΑΣ","keys":["ΡΗΝΑΚΗΣ ΠΑΡΑΣΚΕΥΑΣ"],"aliases":["ΡΗΝΑΚΗΣ ΠΑΡΑΣΚΕΥΑΣ"],"normalizedAliases":["ΡΗΝΑΚΗΣ ΠΑΡΑΣΚΕΥΑΣ"],"searchTokens":["ΠΑΡΑΣΚΕΥΑΣ","ΡΗΝΑΚΗΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-095","name":"ΡΙΖΕΣ ΕΥΘΥΜΙΟΣ","keys":["ΡΙΖΕΣ ΕΥΘΥΜΙΟΣ"],"aliases":["ΡΙΖΕΣ ΕΥΘΥΜΙΟΣ"],"normalizedAliases":["ΡΙΖΕΣ ΕΥΘΥΜΙΟΣ"],"searchTokens":["ΕΥΘΥΜΙΟΣ","ΡΙΖΕΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-096","name":"ΡΙΖΟΠΟΥΛΟΣ ΓΡΗΓΟΡΙΟΣ","keys":["ΡΙΖΟΠΟΥΛΟΣ ΓΡΗΓΟΡΙΟΣ"],"aliases":["ΡΙΖΟΠΟΥΛΟΣ ΓΡΗΓΟΡΙΟΣ"],"normalizedAliases":["ΡΙΖΟΠΟΥΛΟΣ ΓΡΗΓΟΡΙΟΣ"],"searchTokens":["ΓΡΗΓΟΡΙΟΣ","ΡΙΖΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-097","name":"ΣΑΒΒΑΤΑΚΗΣ ΓΕΩΡΓΙΟΣ","keys":["ΣΑΒΒΑΤΑΚΗΣ ΓΕΩΡΓΙΟΣ"],"aliases":["ΣΑΒΒΑΤΑΚΗΣ ΓΕΩΡΓΙΟΣ"],"normalizedAliases":["ΣΑΒΒΑΤΑΚΗΣ ΓΕΩΡΓΙΟΣ"],"searchTokens":["ΓΕΩΡΓΙΟΣ","ΣΑΒΒΑΤΑΚΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-098","name":"ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ","keys":["ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ"],"aliases":["ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ"],"normalizedAliases":["ΣΑΒΒΟΠΟΥΛΟΣ ΘΕΟΔΩΡΟΣ"],"searchTokens":["ΘΕΟΔΩΡΟΣ","ΣΑΒΒΟΠΟΥΛΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-099","name":"ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ ΑΛΕΞΑΝΔΡΟΣ","keys":["ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ ΑΛΕΞΑΝΔΡΟΣ"],"aliases":["ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ ΑΛΕΞΑΝΔΡΟΣ"],"normalizedAliases":["ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ ΑΛΕΞΑΝΔΡΟΣ"],"searchTokens":["ΑΛΕΞΑΝΔΡΟΣ","ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-100","name":"ΣΑΚΚΑ ΕΙΡΗΝΗ","keys":["ΣΑΚΚΑ ΕΙΡΗΝΗ"],"aliases":["ΣΑΚΚΑ ΕΙΡΗΝΗ"],"normalizedAliases":["ΣΑΚΚΑ ΕΙΡΗΝΗ"],"searchTokens":["ΕΙΡΗΝΗ","ΣΑΚΚΑ"],"policyCount":2,"aliasCount":1},{"id":"customer-101","name":"ΣΑΝΤΑΜΟΥΡΗ ΓΕΩΡΓΙΑ","keys":["ΣΑΝΤΑΜΟΥΡΗ ΓΕΩΡΓΙΑ"],"aliases":["ΣΑΝΤΑΜΟΥΡΗ ΓΕΩΡΓΙΑ"],"normalizedAliases":["ΣΑΝΤΑΜΟΥΡΗ ΓΕΩΡΓΙΑ"],"searchTokens":["ΓΕΩΡΓΙΑ","ΣΑΝΤΑΜΟΥΡΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-102","name":"ΣΑΡΑΦΑΔΗ ΕΥΑΝΘΙΑ","keys":["ΣΑΡΑΦΑΔΗ ΕΥΑΝΘΙΑ"],"aliases":["ΣΑΡΑΦΑΔΗ ΕΥΑΝΘΙΑ"],"normalizedAliases":["ΣΑΡΑΦΑΔΗ ΕΥΑΝΘΙΑ"],"searchTokens":["ΕΥΑΝΘΙΑ","ΣΑΡΑΦΑΔΗ"],"policyCount":2,"aliasCount":1},{"id":"customer-103","name":"ΣΑΡΑΦΑΔΗ ΜΑΓΔΑΛΗΝΗ","keys":["ΣΑΡΑΦΑΔΗ ΜΑΓΔΑΛΗΝΗ"],"aliases":["ΣΑΡΑΦΑΔΗ ΜΑΓΔΑΛΗΝΗ"],"normalizedAliases":["ΣΑΡΑΦΑΔΗ ΜΑΓΔΑΛΗΝΗ"],"searchTokens":["ΜΑΓΔΑΛΗΝΗ","ΣΑΡΑΦΑΔΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-104","name":"ΣΔΡΕΝΙΑ ΠΑΡΑΣΚΕΥΗ","keys":["ΣΔΡΕΝΙΑ ΠΑΡΑΣΚΕΥΗ"],"aliases":["ΣΔΡΕΝΙΑ ΠΑΡΑΣΚΕΥΗ"],"normalizedAliases":["ΣΔΡΕΝΙΑ ΠΑΡΑΣΚΕΥΗ"],"searchTokens":["ΠΑΡΑΣΚΕΥΗ","ΣΔΡΕΝΙΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-105","name":"ΣΔΡΕΝΙΑΣ ΚΩΝΣΤΑΝΤΙΝ","keys":["ΣΔΡΕΝΙΑΣ ΚΩΝΣΤΑΝΤΙΝ"],"aliases":["ΣΔΡΕΝΙΑΣ ΚΩΝΣΤΑΝΤΙΝ"],"normalizedAliases":["ΣΔΡΕΝΙΑΣ ΚΩΝΣΤΑΝΤΙΝ"],"searchTokens":["ΚΩΝΣΤΑΝΤΙΝ","ΣΔΡΕΝΙΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-106","name":"ΣΔΡΕΝΙΑΣ ΧΡΗΣΤΟΣ","keys":["ΣΔΡΕΝΙΑΣ ΧΡΗΣΤΟΣ"],"aliases":["ΣΔΡΕΝΙΑΣ ΧΡΗΣΤΟΣ"],"normalizedAliases":["ΣΔΡΕΝΙΑΣ ΧΡΗΣΤΟΣ"],"searchTokens":["ΣΔΡΕΝΙΑΣ","ΧΡΗΣΤΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-107","name":"ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ","keys":["ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ"],"aliases":["ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ"],"normalizedAliases":["ΣΕΦΕΡΛΗΣ ΑΝΑΣΤΑΣΙΟΣ"],"searchTokens":["ΑΝΑΣΤΑΣΙΟΣ","ΣΕΦΕΡΛΗΣ"],"policyCount":4,"aliasCount":1},{"id":"customer-108","name":"ΣΕΦΕΡΛΗΣ ΓΕΩΡΓΙΟΣ","keys":["ΣΕΦΕΡΛΗΣ ΓΕΩΡΓΙΟΣ"],"aliases":["ΣΕΦΕΡΛΗΣ ΓΕΩΡΓΙΟΣ"],"normalizedAliases":["ΣΕΦΕΡΛΗΣ ΓΕΩΡΓΙΟΣ"],"searchTokens":["ΓΕΩΡΓΙΟΣ","ΣΕΦΕΡΛΗΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-109","name":"ΣΙΑΠΛΑΟΥΡΑΣ ΜΑΡΙΟΣ","keys":["ΣΙΑΠΛΑΟΥΡΑΣ ΜΑΡΙΟΣ"],"aliases":["ΣΙΑΠΛΑΟΥΡΑΣ ΜΑΡΙΟΣ"],"normalizedAliases":["ΣΙΑΠΛΑΟΥΡΑΣ ΜΑΡΙΟΣ"],"searchTokens":["ΜΑΡΙΟΣ","ΣΙΑΠΛΑΟΥΡΑΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-110","name":"ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ","keys":["ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ"],"aliases":["ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ"],"normalizedAliases":["ΣΤΕΦΑΝΑΚΗ ΜΑΡΙΑ"],"searchTokens":["ΜΑΡΙΑ","ΣΤΕΦΑΝΑΚΗ"],"policyCount":2,"aliasCount":1},{"id":"customer-111","name":"ΣΤΡΟΥΓΓΑΡΗ ΑΙΚΑΤΕΡΙΝΗ","keys":["ΣΤΡΟΥΓΓΑΡΗ ΑΙΚΑΤΕΡΙΝΗ"],"aliases":["ΣΤΡΟΥΓΓΑΡΗ ΑΙΚΑΤΕΡΙΝΗ"],"normalizedAliases":["ΣΤΡΟΥΓΓΑΡΗ ΑΙΚΑΤΕΡΙΝΗ"],"searchTokens":["ΑΙΚΑΤΕΡΙΝΗ","ΣΤΡΟΥΓΓΑΡΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-112","name":"ΣΥΡΙΓΟΣ ΧΡΗΣΤΟΣ","keys":["ΣΥΡΙΓΟΣ ΧΡΗΣΤΟΣ"],"aliases":["ΣΥΡΙΓΟΣ ΧΡΗΣΤΟΣ"],"normalizedAliases":["ΣΥΡΙΓΟΣ ΧΡΗΣΤΟΣ"],"searchTokens":["ΣΥΡΙΓΟΣ","ΧΡΗΣΤΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-113","name":"ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ","keys":["ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ"],"aliases":["ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ"],"normalizedAliases":["ΣΦΑΕΛΟΣ ΓΕΩΡΓΙΟΣ"],"searchTokens":["ΓΕΩΡΓΙΟΣ","ΣΦΑΕΛΟΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-114","name":"ΣΩΤΗΡΙΑΔΗΣ ΣΤΑΥΡΟΣ Μ ΙΚΕ","keys":["ΣΩΤΗΡΙΑΔΗΣ ΣΤΑΥΡΟΣ Μ ΙΚΕ"],"aliases":["ΣΩΤΗΡΙΑΔΗΣ ΣΤΑΥΡΟΣ Μ ΙΚΕ"],"normalizedAliases":["ΣΩΤΗΡΙΑΔΗΣ ΣΤΑΥΡΟΣ Μ ΙΚΕ"],"searchTokens":["ΙΚΕ","Μ","ΣΤΑΥΡΟΣ","ΣΩΤΗΡΙΑΔΗΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-115","name":"ΤΖΩΡΤΖΟΠΟΥΛΟΣ ΑΓΓΕΛΟΣ","keys":["ΤΖΩΡΤΖΟΠΟΥΛΟΣ ΑΓΓΕΛΟΣ"],"aliases":["ΤΖΩΡΤΖΟΠΟΥΛΟΣ ΑΓΓΕΛΟΣ"],"normalizedAliases":["ΤΖΩΡΤΖΟΠΟΥΛΟΣ ΑΓΓΕΛΟΣ"],"searchTokens":["ΑΓΓΕΛΟΣ","ΤΖΩΡΤΖΟΠΟΥΛΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-116","name":"ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ","keys":["ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ"],"aliases":["ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ"],"normalizedAliases":["ΤΡΙΟΥΛΙΔΗΣ ΣΤΑΥΡΟΣ"],"searchTokens":["ΣΤΑΥΡΟΣ","ΤΡΙΟΥΛΙΔΗΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-117","name":"ΤΣΕΡΤΟΣ ΑΝΔΡΕΑΣ","keys":["ΤΣΕΡΤΟΣ ΑΝΔΡΕΑΣ"],"aliases":["ΤΣΕΡΤΟΣ ΑΝΔΡΕΑΣ"],"normalizedAliases":["ΤΣΕΡΤΟΣ ΑΝΔΡΕΑΣ"],"searchTokens":["ΑΝΔΡΕΑΣ","ΤΣΕΡΤΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-118","name":"ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε","keys":["ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε Ε"],"aliases":["ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε.Ε"],"normalizedAliases":["ΤΣΕΡΤΟΣ ΓΕΩΡΓΙΟΣ Ε Ε"],"searchTokens":["ΓΕΩΡΓΙΟΣ","ΕΕ","ΤΣΕΡΤΟΣ"],"policyCount":5,"aliasCount":1},{"id":"customer-119","name":"ΤΣΕΡΤΟΥ ΕΛΕΑΝΝΑ","keys":["ΤΣΕΡΤΟΥ ΕΛΕΑΝΝΑ"],"aliases":["ΤΣΕΡΤΟΥ ΕΛΕΑΝΝΑ"],"normalizedAliases":["ΤΣΕΡΤΟΥ ΕΛΕΑΝΝΑ"],"searchTokens":["ΕΛΕΑΝΝΑ","ΤΣΕΡΤΟΥ"],"policyCount":1,"aliasCount":1},{"id":"customer-120","name":"ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ","keys":["ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ"],"aliases":["ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ"],"normalizedAliases":["ΤΣΕΡΤΟΥ ΣΤΕΦΑΝΙΑ"],"searchTokens":["ΣΤΕΦΑΝΙΑ","ΤΣΕΡΤΟΥ"],"policyCount":2,"aliasCount":1},{"id":"customer-121","name":"ΤΣΙΑΝΤΟΥΚΑΣ ΠΑΝΑΓΙΩΤΗΣ","keys":["ΤΣΙΑΝΤΟΥΚΑΣ ΠΑΝΑΓΙΩΤΗΣ"],"aliases":["ΤΣΙΑΝΤΟΥΚΑΣ ΠΑΝΑΓΙΩΤΗΣ"],"normalizedAliases":["ΤΣΙΑΝΤΟΥΚΑΣ ΠΑΝΑΓΙΩΤΗΣ"],"searchTokens":["ΠΑΝΑΓΙΩΤΗΣ","ΤΣΙΑΝΤΟΥΚΑΣ"],"policyCount":2,"aliasCount":1},{"id":"customer-122","name":"ΤΣΙΛΙΚΑΣ ΚΩΝΣΤΑΝΤΙΝ","keys":["ΤΣΙΛΙΚΑΣ ΚΩΝΣΤΑΝΤΙΝ"],"aliases":["ΤΣΙΛΙΚΑΣ ΚΩΝΣΤΑΝΤΙΝ"],"normalizedAliases":["ΤΣΙΛΙΚΑΣ ΚΩΝΣΤΑΝΤΙΝ"],"searchTokens":["ΚΩΝΣΤΑΝΤΙΝ","ΤΣΙΛΙΚΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-123","name":"ΤΣΙΜΠΙΔΑΣ ΣΤΑΥΡΟΣ","keys":["ΤΣΙΜΠΙΔΑΣ ΣΤΑΥΡΟΣ"],"aliases":["ΤΣΙΜΠΙΔΑΣ ΣΤΑΥΡΟΣ"],"normalizedAliases":["ΤΣΙΜΠΙΔΑΣ ΣΤΑΥΡΟΣ"],"searchTokens":["ΣΤΑΥΡΟΣ","ΤΣΙΜΠΙΔΑΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-124","name":"ΤΣΙΟΥΜΠΡΗΣ ΧΑΡΑΛΑΜΠΟΣ","keys":["ΤΣΙΟΥΜΠΡΗΣ ΧΑΡΑΛΑΜΠΟΣ"],"aliases":["ΤΣΙΟΥΜΠΡΗΣ ΧΑΡΑΛΑΜΠΟΣ"],"normalizedAliases":["ΤΣΙΟΥΜΠΡΗΣ ΧΑΡΑΛΑΜΠΟΣ"],"searchTokens":["ΤΣΙΟΥΜΠΡΗΣ","ΧΑΡΑΛΑΜΠΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-125","name":"ΤΣΙΠΡΑ ΕΥΑΓΓΕΛΙΑ","keys":["ΤΣΙΠΡΑ ΕΥΑΓΓΕΛΙΑ"],"aliases":["ΤΣΙΠΡΑ ΕΥΑΓΓΕΛΙΑ"],"normalizedAliases":["ΤΣΙΠΡΑ ΕΥΑΓΓΕΛΙΑ"],"searchTokens":["ΕΥΑΓΓΕΛΙΑ","ΤΣΙΠΡΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-126","name":"ΦΙΛΙΠΠΟΥ ΙΑΚΩΒΟΣ","keys":["ΦΙΛΙΠΠΟΥ ΙΑΚΩΒΟΣ"],"aliases":["ΦΙΛΙΠΠΟΥ ΙΑΚΩΒΟΣ"],"normalizedAliases":["ΦΙΛΙΠΠΟΥ ΙΑΚΩΒΟΣ"],"searchTokens":["ΙΑΚΩΒΟΣ","ΦΙΛΙΠΠΟΥ"],"policyCount":2,"aliasCount":1},{"id":"customer-127","name":"ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ","keys":["ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ"],"aliases":["ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ"],"normalizedAliases":["ΦΙΛΟΠΟΥΛΟΣ ΙΩΑΝΝΗΣ"],"searchTokens":["ΙΩΑΝΝΗΣ","ΦΙΛΟΠΟΥΛΟΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-128","name":"ΦΙΛΟΠΟΥΛΟΥ ΧΡΥΣΑΝΘΗ","keys":["ΦΙΛΟΠΟΥΛΟΥ ΧΡΥΣΑΝΘΗ"],"aliases":["ΦΙΛΟΠΟΥΛΟΥ ΧΡΥΣΑΝΘΗ"],"normalizedAliases":["ΦΙΛΟΠΟΥΛΟΥ ΧΡΥΣΑΝΘΗ"],"searchTokens":["ΦΙΛΟΠΟΥΛΟΥ","ΧΡΥΣΑΝΘΗ"],"policyCount":1,"aliasCount":1},{"id":"customer-129","name":"ΦΟΥΝΤΑ ΣΟΦΙΑ","keys":["ΦΟΥΝΤΑ ΣΟΦΙΑ"],"aliases":["ΦΟΥΝΤΑ ΣΟΦΙΑ"],"normalizedAliases":["ΦΟΥΝΤΑ ΣΟΦΙΑ"],"searchTokens":["ΣΟΦΙΑ","ΦΟΥΝΤΑ"],"policyCount":3,"aliasCount":1},{"id":"customer-130","name":"ΦΟΥΝΤΑΣ ΧΑΡΑΛΑΜΠΟΣ","keys":["ΦΟΥΝΤΑΣ ΧΑΡΑΛΑΜΠΟΣ"],"aliases":["ΦΟΥΝΤΑΣ ΧΑΡΑΛΑΜΠΟΣ"],"normalizedAliases":["ΦΟΥΝΤΑΣ ΧΑΡΑΛΑΜΠΟΣ"],"searchTokens":["ΦΟΥΝΤΑΣ","ΧΑΡΑΛΑΜΠΟΣ"],"policyCount":1,"aliasCount":1},{"id":"customer-131","name":"ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ","keys":["ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ"],"aliases":["ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ"],"normalizedAliases":["ΦΟΥΣΤΕΡΗΣ ΕΛΕΥΘΕΡΙΟΣ"],"searchTokens":["ΕΛΕΥΘΕΡΙΟΣ","ΦΟΥΣΤΕΡΗΣ"],"policyCount":3,"aliasCount":1},{"id":"customer-132","name":"ΧΑΒΔΟΥΛΑ ΙΟΥΛΙΑ","keys":["ΧΑΒΔΟΥΛΑ ΙΟΥΛΙΑ"],"aliases":["ΧΑΒΔΟΥΛΑ ΙΟΥΛΙΑ"],"normalizedAliases":["ΧΑΒΔΟΥΛΑ ΙΟΥΛΙΑ"],"searchTokens":["ΙΟΥΛΙΑ","ΧΑΒΔΟΥΛΑ"],"policyCount":1,"aliasCount":1},{"id":"customer-133","name":"ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ","keys":["ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ"],"aliases":["ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ"],"normalizedAliases":["ΧΑΤΖΗΔΟΥΡΟΥ ΒΑΣΙΛΙΚΗ"],"searchTokens":["ΒΑΣΙΛΙΚΗ","ΧΑΤΖΗΔΟΥΡΟΥ"],"policyCount":2,"aliasCount":1},{"id":"customer-134","name":"ΧΑΤΖΗΝΙΚΟΛΑΟΥ ΜΑΡΙΑ","keys":["ΧΑΤΖΗΝΙΚΟΛΑΟΥ ΜΑΡΙΑ"],"aliases":["ΧΑΤΖΗΝΙΚΟΛΑΟΥ ΜΑΡΙΑ"],"normalizedAliases":["ΧΑΤΖΗΝΙΚΟΛΑΟΥ ΜΑΡΙΑ"],"searchTokens":["ΜΑΡΙΑ","ΧΑΤΖΗΝΙΚΟΛΑΟΥ"],"policyCount":1,"aliasCount":1},{"id":"customer-135","name":"ΨΥΛΛΙΑ ΣΤΑΥΡΟΥΛΑ","keys":["ΨΥΛΛΙΑ ΣΤΑΥΡΟΥΛΑ"],"aliases":["ΨΥΛΛΙΑ ΣΤΑΥΡΟΥΛΑ"],"normalizedAliases":["ΨΥΛΛΙΑ ΣΤΑΥΡΟΥΛΑ"],"searchTokens":["ΣΤΑΥΡΟΥΛΑ","ΨΥΛΛΙΑ"],"policyCount":1,"aliasCount":1}];
+    const POLICYHOLDER_ENTITY_BY_ID = new Map(
+      POLICYHOLDERS.map(entity => [entity.id, entity])
+    );
+
+    function autocompleteTokens(value) {
+      const rawTokens = normalizeGreek(value)
+        .split(" ")
+        .filter(Boolean);
+      const tokens = [];
+
+      for (let index = 0; index < rawTokens.length; index += 1) {
+        const token = rawTokens[index];
+
+        if (
+          token.length === 1 &&
+          /^[Α-ΩA-Z0-9]$/.test(token)
+        ) {
+          const characters = [token];
+          let cursor = index + 1;
+
+          while (
+            cursor < rawTokens.length &&
+            rawTokens[cursor].length === 1 &&
+            /^[Α-ΩA-Z0-9]$/.test(rawTokens[cursor])
+          ) {
+            characters.push(rawTokens[cursor]);
+            cursor += 1;
+          }
+
+          if (characters.length >= 2) {
+            tokens.push(characters.join(""));
+            index = cursor - 1;
+            continue;
+          }
+        }
+
+        tokens.push(token);
+      }
+
+      return tokens;
+    }
+
+    function tokenPrefixMatch(nameToken, queryToken) {
+      if (!nameToken || !queryToken) return false;
+      return nameToken.startsWith(queryToken);
+    }
+
+    function queryTokensMatchCandidate(candidate, queryTokens) {
+      if (!queryTokens.length) return false;
+
+      return queryTokens.every(queryToken =>
+        candidate.searchTokens.some(nameToken =>
+          tokenPrefixMatch(nameToken, queryToken)
+        )
+      );
+    }
+
+    function candidateScore(candidate, normalizedQuery, queryTokens) {
+      let score = 0;
+
+      candidate.normalizedAliases.forEach(alias => {
+        if (alias === normalizedQuery) {
+          score = Math.max(score, 10000);
+        }
+
+        if (alias.startsWith(normalizedQuery)) {
+          score = Math.max(score, 5000);
+        }
+      });
+
+      const canonicalTokens = autocompleteTokens(candidate.name);
+
+      if (
+        canonicalTokens.length &&
+        queryTokens.length &&
+        canonicalTokens[0].startsWith(queryTokens[0])
+      ) {
+        score += 2000;
+      }
+
+      queryTokens.forEach((queryToken, queryIndex) => {
+        const exactIndex = candidate.searchTokens.findIndex(
+          token => token === queryToken
+        );
+        const prefixIndex = candidate.searchTokens.findIndex(
+          token => token.startsWith(queryToken)
+        );
+
+        if (exactIndex >= 0) {
+          score += 500 - exactIndex * 5;
+        } else if (prefixIndex >= 0) {
+          score += 250 - prefixIndex * 5;
+        }
+
+        if (
+          queryIndex < canonicalTokens.length &&
+          canonicalTokens[queryIndex].startsWith(queryToken)
+        ) {
+          score += 150;
+        }
+      });
+
+      score += Math.min(candidate.policyCount, 20);
+      return score;
+    }
+
+    function getCandidatePeople(rawQuery) {
+      const normalizedQuery = normalizeGreek(rawQuery);
+      const queryTokens = autocompleteTokens(rawQuery);
+
+      if (!normalizedQuery || !queryTokens.length) return [];
+
+      return POLICYHOLDERS
+        .filter(candidate =>
+          queryTokensMatchCandidate(candidate, queryTokens)
+        )
+        .map(candidate => ({
+          ...candidate,
+          score: candidateScore(
+            candidate,
+            normalizedQuery,
+            queryTokens
+          )
+        }))
+        .sort((left, right) =>
+          right.score - left.score ||
+          left.name.localeCompare(right.name, "el")
+        );
     }
 
     function surnameVariants(value) {
@@ -763,19 +1111,13 @@
       return nameToken === queryToken;
     }
 
-    function personMatches(personName, rawQuery) {
-      const nameTokens = normalizeGreek(personName).split(" ").filter(Boolean);
-      const queryTokens = normalizeGreek(rawQuery).split(" ").filter(Boolean);
+    function personMatches(personName) {
+      if (!selectedPersonKey) return false;
 
-      if (!nameTokens.length || !queryTokens.length) return false;
-      if (queryTokens.length > nameTokens.length) return false;
+      const entity = POLICYHOLDER_ENTITY_BY_ID.get(selectedPersonKey);
+      if (!entity) return false;
 
-      // Αυστηρή αντιστοίχιση ολόκληρων λέξεων με την ίδια σειρά:
-      // 1 λέξη = ακριβές επώνυμο
-      // 2 λέξεις = ακριβές επώνυμο + ακριβές όνομα
-      return queryTokens.every(
-        (queryToken, index) => nameTokens[index] === queryToken
-      );
+      return entity.keys.includes(personKey(personName));
     }
 
     function parseGreekDate(value) {
@@ -799,17 +1141,15 @@
       if (!queryTokens.length) return escapeHtml(text);
 
       const words = text.split(/(\s+)/);
-      let tokenIndex = 0;
 
       return words.map(word => {
         const normalizedWord = normalizeGreek(word);
         if (!normalizedWord) return escapeHtml(word);
 
-        const isMatch =
-          tokenIndex < queryTokens.length &&
-          normalizedWord === queryTokens[tokenIndex];
+        const isMatch = queryTokens.some(queryToken =>
+          normalizedWord.startsWith(queryToken)
+        );
 
-        tokenIndex += 1;
         return isMatch ? `<mark>${escapeHtml(word)}</mark>` : escapeHtml(word);
       }).join("");
     }
@@ -830,32 +1170,114 @@
       button.addEventListener("click", () => showView("homeView"));
     });
 
+    function selectPolicyholder(entityId, name) {
+      selectedPersonKey = entityId;
+      searchInput.value = name;
+      selectedPersonName.textContent = name;
+      selectedPersonBox.classList.add("visible");
+      renderResults();
+    }
+
+    function renderCandidateSelection(query) {
+      const candidates = getCandidatePeople(query);
+      const MAX_VISIBLE_CANDIDATES = 16;
+      const visibleCandidates = candidates.slice(0, MAX_VISIBLE_CANDIDATES);
+
+      summaryCard.classList.remove("visible");
+      selectedPersonBox.classList.remove("visible");
+
+      if (!candidates.length) {
+        resultArea.innerHTML = `
+          <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">∅</span>
+            Δεν βρέθηκε συμβαλλόμενος που να ξεκινά από
+            <strong>${escapeHtml(query)}</strong>.
+          </div>`;
+        return;
+      }
+
+      const cards = visibleCandidates.map(candidate => `
+        <button
+          class="candidate-card"
+          type="button"
+          data-person-key="${escapeHtml(candidate.id)}"
+          data-person-name="${escapeHtml(candidate.name)}"
+        >
+          <span class="candidate-name">${highlight(candidate.name, query)}</span>
+          <span class="candidate-meta">
+            <span class="role-badge">Συμβαλλόμενος</span>
+            <span class="policy-count-badge">
+              ${candidate.policyCount} ${candidate.policyCount === 1 ? "συμβόλαιο" : "συμβόλαια"}
+            </span>
+            ${candidate.aliasCount > 1
+              ? `<span class="role-badge alias-count-badge">${candidate.aliasCount} καταχωρίσεις ενοποιήθηκαν</span>`
+              : ""}
+          </span>
+          ${candidate.aliasCount > 1
+            ? `<span class="alias-note">Περιλαμβάνει παραλλαγές της ίδιας εταιρικής επωνυμίας.</span>`
+            : ""}
+        </button>
+      `).join("");
+
+      const moreText = candidates.length > MAX_VISIBLE_CANDIDATES
+        ? `Εμφανίζονται οι ${MAX_VISIBLE_CANDIDATES} πιο σχετικές από ${candidates.length} επιλογές. Συνέχισε να πληκτρολογείς για μεγαλύτερη ακρίβεια.`
+        : `${candidates.length} ${candidates.length === 1 ? "πιθανή επιλογή" : "πιθανές επιλογές"}`;
+
+      resultArea.innerHTML = `
+        <div class="candidate-panel">
+          <div class="candidate-status">
+            <strong>Αυτόματη συμπλήρωση</strong>
+            <span>${moreText}</span>
+          </div>
+          <h3>Επίλεξε συμβαλλόμενο</h3>
+          <p>
+            Πιθανές επιλογές για
+            <span class="candidate-query">«${escapeHtml(query)}»</span>.
+            Τα αποτελέσματα περιορίζονται όσο πληκτρολογείς.
+          </p>
+          <div class="candidate-grid">${cards}</div>
+        </div>`;
+
+      resultArea.querySelectorAll("[data-person-key]").forEach(button => {
+        button.addEventListener("click", () => {
+          selectPolicyholder(
+            button.dataset.personKey,
+            button.dataset.personName
+          );
+        });
+      });
+    }
+
     function renderResults() {
       const query = searchInput.value.trim();
       clearButton.classList.toggle("visible", query.length > 0);
 
-      if (normalizeGreek(query).length < 2) {
+      if (normalizeGreek(query).length < 1) {
+        selectedPersonKey = null;
+        selectedPersonBox.classList.remove("visible");
         resultArea.innerHTML = `
           <div class="empty-state">
             <span class="empty-icon" aria-hidden="true">🔎</span>
-            Ξεκίνα πληκτρολογώντας τουλάχιστον 2 χαρακτήρες.
+            Ξεκίνα να πληκτρολογείς όνομα, επώνυμο ή επωνυμία εταιρείας.
           </div>`;
         summaryCard.classList.remove("visible");
         return;
       }
 
+      if (!selectedPersonKey) {
+        renderCandidateSelection(query);
+        return;
+      }
+
       const matches = LIFE_RECORDS
-        .filter(record =>
-          personMatches(record.insured, query) ||
-          personMatches(record.policyholder, query)
-        )
+        .filter(record => personMatches(record.policyholder))
         .sort((a, b) => parseGreekDate(b.startDate) - parseGreekDate(a.startDate));
 
       if (!matches.length) {
         resultArea.innerHTML = `
           <div class="empty-state">
             <span class="empty-icon" aria-hidden="true">∅</span>
-            Δεν βρέθηκε εγγραφή για την αναζήτηση <strong>${escapeHtml(query)}</strong>.
+            Δεν βρέθηκε συμβόλαιο με αυτόν τον συμβαλλόμενο για την αναζήτηση <strong>${escapeHtml(query)}</strong>.
           </div>`;
         summaryCard.classList.remove("visible");
         return;
@@ -870,8 +1292,8 @@
               ${record.product ? `<div class="policy-product">${escapeHtml(record.product)}</div>` : ""}
             </div>
             <div class="premium">
-              <span class="premium-label">Ετήσια καθαρά ασφάλιστρα</span>
-              <strong>${euro.format(Number(record.annualNetPremium) || 0)}</strong>
+              <span class="premium-label">Ετήσια μεικτά ασφάλιστρα</span>
+              <strong>${euro.format(grossPremium(record.annualNetPremium))}</strong>
             </div>
           </div>
           <div class="people">
@@ -894,28 +1316,60 @@
         </div>
         <div class="results-list">${cards}</div>`;
 
-      const total = matches.reduce((sum, record) => sum + (Number(record.annualNetPremium) || 0), 0);
-      premiumTotal.textContent = euro.format(total);
+      const total = matches.reduce(
+        (sum, record) => sum + grossPremium(record.annualNetPremium),
+        0
+      );
+      premiumTotal.textContent = euro.format(
+        Math.round((total + Number.EPSILON) * 100) / 100
+      );
       policyTotal.textContent = String(matches.length);
       summaryCard.classList.add("visible");
     }
 
     let searchTimer;
     searchInput.addEventListener("input", () => {
+      selectedPersonKey = null;
+      selectedPersonBox.classList.remove("visible");
       clearTimeout(searchTimer);
       searchTimer = setTimeout(renderResults, 110);
     });
 
     clearButton.addEventListener("click", () => {
       searchInput.value = "";
+      selectedPersonKey = null;
+      selectedPersonBox.classList.remove("visible");
       renderResults();
       searchInput.focus();
+    });
+
+    changePersonButton.addEventListener("click", () => {
+      const currentName = searchInput.value.trim();
+      selectedPersonKey = null;
+      selectedPersonBox.classList.remove("visible");
+      renderCandidateSelection(currentName);
+      searchInput.focus();
+      searchInput.select();
     });
 
     searchInput.addEventListener("keydown", event => {
       if (event.key === "Escape") {
         searchInput.value = "";
+        selectedPersonKey = null;
+        selectedPersonBox.classList.remove("visible");
         renderResults();
+        return;
+      }
+
+      if (event.key === "Enter" && !selectedPersonKey) {
+        const firstCandidate = resultArea.querySelector("[data-person-key]");
+        if (firstCandidate) {
+          event.preventDefault();
+          selectPolicyholder(
+            firstCandidate.dataset.personKey,
+            firstCandidate.dataset.personName
+          );
+        }
       }
     });
   </script>
@@ -941,14 +1395,14 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", async () => {
           try {
-            const registration = await navigator.serviceWorker.register("./sw-v5.js", {
+            const registration = await navigator.serviceWorker.register("./sw-v11.js", {
               updateViaCache: "none"
             });
             await registration.update();
 
             navigator.serviceWorker.addEventListener("controllerchange", () => {
-              if (!sessionStorage.getItem("v5Reloaded")) {
-                sessionStorage.setItem("v5Reloaded", "1");
+              if (!sessionStorage.getItem("v11Reloaded")) {
+                sessionStorage.setItem("v11Reloaded", "1");
                 window.location.reload();
               }
             });
